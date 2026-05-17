@@ -1,0 +1,19 @@
+# Dependency directories
+node_modules/
+
+# Local env files
+.env
+.env.local
+.env.*.local
+
+# Log files
+*.log
+abd-audit-results.log
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
+
+# Temporary files
+scripts/cleanup.js

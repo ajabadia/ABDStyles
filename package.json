@@ -1,0 +1,33 @@
+{
+  "name": "@abd/styles",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Industrial multi-tenant dynamic styling engine and common visual assets for ABD suite.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "audit": "powershell ./scripts/abd-audit.ps1"
+  },
+  "keywords": [
+    "abd",
+    "theme",
+    "multi-tenant",
+    "branding",
+    "tailwind",
+    "yiq"
+  ],
+  "author": "Antigravity & Google Deepmind Team",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "@types/node": "^20.12.7"
+  }
+}
