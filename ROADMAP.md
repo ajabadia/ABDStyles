@@ -14,6 +14,14 @@ Roadmap detailing the completed visual engineering achievements and the upcoming
   - Hardened input validations using strict Zod schemas against CSS injection attacks.
   - Adapted a 4-phase quality audit pipeline yielding a flawless certification status.
 
+### Sprint 2: Centralized Visual Chassis & UI Components
+- **Objective**: Standardize visual layout styles and abstract critical UI components (`SystemSettings` and `TacticalSidebar`) to eliminate style drift across the suite.
+- **Results**:
+  - Implemented the unified `src/styles/industrial-core.css` with HSL definitions, console grid, grain texture, and scrollbars.
+  - Created framework-agnostic pure React components `SystemSettings` and `TacticalSidebar`.
+  - Added JSX support to the TSConfig, peer dependencies for React, and PowerShell CSS copying build script.
+  - Updated the architectural audit guard to include `.tsx` file scanning and successfully certified the system.
+
 ---
 
 ## 🗺️ Upcoming Sprints

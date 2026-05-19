@@ -4,6 +4,10 @@ Centralized multi-tenant dynamic styling engine and common visual tokens for the
 
 Utilizes **TypeScript**, **Zod**, and **Tailwind CSS v4** to render highly customizable corporate styles at Next.js Server Component (SSR) level with **0ms latency** and zero layout flashing.
 
+Now also serves as the single provider for:
+*   **Unified Stylesheet**: Consolidated visual parameters and console utility classes (`dist/styles/industrial-core.css`).
+*   **Agnostic UI Components**: Reusable, framework-agnostic React components (`SystemSettings`, `TacticalSidebar`) that eliminate interface divergence across applications.
+
 ---
 
 ## 🛠️ Quickstart
