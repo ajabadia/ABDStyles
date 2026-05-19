@@ -24,10 +24,39 @@ Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styl
 
 2. **Unificación de la Hoja de Estilos (`globals.css`)**:
    - Limpia tu archivo `globals.css` eliminando declaraciones locales duplicadas (variables HSL base, scrollbars, clases de botones de consola como `.btn-primary-console` o `.btn-skip-console`, y utilidades de fondo como `.bg-industrial-grid`, `.mask-industrial-fade`, `.glass-panel` y `.bg-grain`).
-   - Importa la hoja de estilos centralizada directamente:
+   - Importa la hoja de estilos centralizada directamente. Si utilizas Next.js 16 con Turbopack, la resolución de subpaths puede fallar, por lo que es preferible utilizar la ruta relativa directa a `node_modules`:
      ```css
      @import "tailwindcss";
-     @import "@abd/styles/dist/styles/industrial-core.css";
+     @import "../../node_modules/@abd/styles/dist/styles/industrial-core.css";
+     ```
+   - **Mapeo Obligatorio para Tailwind v4**: Declara las variables de mapeo en el bloque `@theme inline` para asociar las propiedades HSL del core con las utilidades de color estándar de Tailwind:
+     ```css
+     @theme inline {
+       --radius-xl: calc(var(--radius) + 1px);
+       --radius-lg: var(--radius);
+       --radius-md: calc(var(--radius) - 1px);
+       --radius-sm: calc(var(--radius) - 2px);
+
+       --color-background: hsl(var(--background));
+       --color-foreground: hsl(var(--foreground));
+       --color-primary: hsl(var(--primary));
+       --color-primary-foreground: hsl(var(--primary-foreground));
+       --color-secondary: hsl(var(--secondary));
+       --color-secondary-foreground: hsl(var(--secondary-foreground));
+       --color-card: hsl(var(--card));
+       --color-card-foreground: hsl(var(--card-foreground));
+       --color-popover: hsl(var(--popover));
+       --color-popover-foreground: hsl(var(--popover-foreground));
+       --color-muted: hsl(var(--muted));
+       --color-muted-foreground: hsl(var(--muted-foreground));
+       --color-accent: hsl(var(--accent));
+       --color-accent-foreground: hsl(var(--accent-foreground));
+       --color-destructive: hsl(var(--destructive));
+       --color-destructive-foreground: hsl(var(--destructive-foreground));
+       --color-border: hsl(var(--border));
+       --color-input: hsl(var(--input));
+       --color-ring: hsl(var(--ring));
+     }
      ```
 
 3. **Inyección en Servidor (SSR) en el Layout Raíz**:
@@ -46,50 +75,52 @@ Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styl
      </head>
      ```
 
-4. **Consumo de Componentes React Reutilizables**:
-   - Reemplaza los componentes locales redundantes `TacticalSidebar` y `SystemSettings` importando las versiones unificadas de la librería:
+4. **Consumo de Componentes React Reutilizables (Patrón Client Wrapper)**:
+   - Dado que los componentes de navegación dependen de callbacks de enrutamiento y hooks del lado del cliente (`useTheme`, `useLocale`, `useSession`), no deben instanciarse directamente dentro de Server Components (como el layout raíz).
+   - **Mejor Práctica**: Mantén un wrapper cliente local (`"use client"`) en tu proyecto satélite (ej. `src/components/ui/SystemSettings.tsx` y `src/components/TacticalSidebar.tsx`) que envuelva a los componentes importados de `@abd/styles` e inyecte los hooks y traducción locales de forma segura:
      ```typescript
-     import { TacticalSidebar, SystemSettings } from '@abd/styles';
-     ```
-   - **TacticalSidebar**: Pásale la lista dinámica de enlaces (`links`), los datos de sesión del usuario (`user`), la función de logout local y el componente Link nativo de tu framework de enrutamiento (ej. `Link` de `@/i18n/routing` o `next/link`):
-     ```tsx
-     import Link from "@/i18n/routing"; // O el link correspondiente
+     // src/components/ui/SystemSettings.tsx
+     "use client";
 
-     <TacticalSidebar
-       user={{ name: session.user.name, role: session.user.role, tenantId: session.user.tenantId, email: session.user.email }}
-       links={[
-         { href: "/dashboard", label: t("overview"), icon: <LayoutDashboard size={14} /> },
-         // ... otros enlaces
-       ]}
-       logoUrl={tenant?.branding?.logoUrl}
-       LinkComponent={Link}
-       onLogout={() => signOut({ callbackUrl: "/" })}
-     />
-     ```
-   - **SystemSettings**: Pásale las traducciones locales calculadas por `next-intl` (evitando importaciones directas en el componente) y el callback para delegar los cambios de idioma y tema (soportando `next-themes` o cambio autónomo):
-     ```tsx
      import { useTheme } from "next-themes";
-     const { theme, setTheme } = useTheme();
+     import { useLocale, useTranslations } from "next-intl";
+     import { usePathname, useRouter } from "@/i18n/routing";
+     import { useSession, signIn, signOut } from "next-auth/react";
+     import { SystemSettings as SharedSystemSettings } from '@abd/styles';
 
-     <SystemSettings
-       locale={locale}
-       onLocaleChange={(loc) => router.replace(pathname, { locale: loc })}
-       theme={theme}
-       onThemeChange={setTheme}
-       translations={{
-         title: t("settings.title"),
-         close: t("settings.close"),
-         language: t("settings.language"),
-         theme: t("settings.theme"),
-         themeLight: t("settings.theme_light"),
-         themeDark: t("settings.theme_dark"),
-         themeSystem: t("settings.theme_system"),
-         logout: t("settings.logout"),
-       }}
-       isAuthenticated={status === "authenticated"}
-       onLogout={() => signOut({ callbackUrl: "/" })}
-     />
+     export function SystemSettings() {
+       const t = useTranslations("settings");
+       const { theme, setTheme } = useTheme();
+       const { status } = useSession();
+       const locale = useLocale();
+       const router = useRouter();
+       const pathname = usePathname();
+
+       return (
+         <SharedSystemSettings
+           locale={locale}
+           onLocaleChange={(loc) => router.replace(pathname, { locale: loc })}
+           theme={theme}
+           onThemeChange={setTheme}
+           translations={{
+             title: t("title"),
+             close: t("close"),
+             language: t("language"),
+             theme: t("theme"),
+             // Ojo con el mapeo si tu JSON usa claves snake_case:
+             themeLight: t("theme_light"),
+             themeDark: t("theme_dark"),
+             themeSystem: t("theme_system"),
+             logout: t("logout"),
+             login: t("login"),
+           }}
+           isAuthenticated={status === "authenticated"}
+           onLogout={() => signOut({ callbackUrl: "/" })}
+         />
+       );
+     }
      ```
+     De este modo, tu layout de servidor puede instanciar el componente local wrapper de manera limpia sin romper los flujos de renderizado.
 
 5. **Alineación con Clases Semánticas**:
    - Asegúrate de que las vistas y componentes utilicen las clases semánticas unificadas (ej: `.btn-primary-console`, `.btn-secondary-console`, `.btn-skip-console`, `.btn-destructive-console`, `.input-console`, `.console-breadcrumb`, `.console-status-dot`) y las variables del tema de Tailwind v4 en lugar de colores fijos.

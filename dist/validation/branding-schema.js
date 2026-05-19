@@ -15,6 +15,7 @@ export const hexColorSchema = z
 export const themeSchema = z.object({
     primary: hexColorSchema,
     secondary: hexColorSchema.optional(),
+    accent: hexColorSchema.optional(),
     background: hexColorSchema.optional(),
     rounded: z.boolean().optional().default(true),
     radius: z.string().regex(/^[0-9.]+(rem|px|em|%)$/).optional()

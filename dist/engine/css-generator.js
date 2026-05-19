@@ -40,6 +40,25 @@ export function generateTenantCss(config) {
     --secondary: ${secHsl} !important;
     --secondary-foreground: ${secFgHsl} !important;`;
     }
+    // Calculate accent values if present
+    let accentCss = '';
+    let accentDarkCss = '';
+    if (parsed.accent) {
+        const accHex = parsed.accent;
+        const accHsl = hexToHslComponents(accHex);
+        const accFgHex = getContrastColor(accHex);
+        const accFgHsl = hexToHslComponents(accFgHex);
+        accentCss = `
+    --accent: ${accHsl} !important;
+    --accent-foreground: ${accFgHsl} !important;`;
+        const accDarkHex = adjustColor(accHex, 15);
+        const accDarkHsl = hexToHslComponents(accDarkHex);
+        const accDarkFgHex = getContrastColor(accDarkHex);
+        const accDarkFgHsl = hexToHslComponents(accDarkFgHex);
+        accentDarkCss = `
+  --accent: ${accDarkHsl} !important;
+  --accent-foreground: ${accDarkFgHsl} !important;`;
+    }
     // Calculate background overrides if present
     let bgCss = '';
     if (parsed.background) {
@@ -66,13 +85,13 @@ export function generateTenantCss(config) {
   --primary: ${primaryHsl} !important;
   --primary-foreground: ${primaryFgHsl} !important;
   --ring: ${primaryHsl} !important;
-  --radius: ${radiusValue} !important;${secondaryCss}${bgCss}
+  --radius: ${radiusValue} !important;${secondaryCss}${accentCss}${bgCss}
 }
 
 .dark {
   --primary: ${primaryDarkHsl} !important;
   --primary-foreground: ${primaryDarkFgHsl} !important;
-  --ring: ${primaryDarkHsl} !important;
+  --ring: ${primaryDarkHsl} !important;${accentDarkCss}
 }`;
 }
 //# sourceMappingURL=css-generator.js.map

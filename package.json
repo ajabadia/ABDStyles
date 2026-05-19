@@ -5,6 +5,13 @@
   "description": "Industrial multi-tenant dynamic styling engine and common visual assets for ABD suite.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./dist/*": "./dist/*"
+  },
   "files": [
     "dist"
   ],

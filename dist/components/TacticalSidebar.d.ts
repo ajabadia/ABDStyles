@@ -31,6 +31,7 @@ export interface TacticalSidebarProps {
     brandName?: string;
     LinkComponent?: React.ComponentType<LinkComponentProps>;
     translations?: TacticalSidebarTranslations;
+    activeHref?: string;
 }
-export declare function TacticalSidebar({ user, links, logoUrl, onLogout, brandName, LinkComponent, translations, }: TacticalSidebarProps): import("react/jsx-runtime").JSX.Element;
+export declare function TacticalSidebar({ user, links, logoUrl, onLogout, brandName, LinkComponent, translations, activeHref, }: TacticalSidebarProps): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=TacticalSidebar.d.ts.map

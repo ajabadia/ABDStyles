@@ -39,6 +39,7 @@ export interface TacticalSidebarProps {
   brandName?: string;
   LinkComponent?: React.ComponentType<LinkComponentProps>;
   translations?: TacticalSidebarTranslations;
+  activeHref?: string;
 }
 
 const defaultTranslations: Required<TacticalSidebarTranslations> = {
@@ -57,6 +58,7 @@ export function TacticalSidebar({
   brandName,
   LinkComponent,
   translations,
+  activeHref,
 }: TacticalSidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -141,17 +143,29 @@ export function TacticalSidebar({
 
         {/* 🧭 Navigation Links (Tactical Links) */}
         <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="px-4 py-3 rounded-none flex items-center gap-4 font-mono text-[10px] font-bold uppercase tracking-wider bg-muted/10 border border-border text-muted-foreground hover:border-primary/20 hover:bg-primary/5 hover:text-primary transition-all duration-200"
-            >
-              <span className="shrink-0">{link.icon}</span>
-              <span className="flex-1 truncate">{link.label}</span>
-            </Link>
-          ))}
+          {links.map((link) => {
+            const isActive = activeHref ? (
+              activeHref === link.href || 
+              (link.href !== "/dashboard" && activeHref.startsWith(link.href))
+            ) : false;
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "px-4 py-3 rounded-none flex items-center gap-4 font-mono text-[10px] font-bold uppercase tracking-wider transition-all duration-200 border",
+                  isActive
+                    ? "bg-primary/10 border-primary text-primary"
+                    : "bg-muted/10 border-border text-muted-foreground hover:border-primary/20 hover:bg-primary/5 hover:text-primary"
+                )}
+              >
+                <span className="shrink-0">{link.icon}</span>
+                <span className="flex-1 truncate">{link.label}</span>
+              </Link>
+            );
+          })}
         </nav>
 
         {/* ⚙️ Tarjeta de Sesión Cyber-Industrial (Bottom Card) */}

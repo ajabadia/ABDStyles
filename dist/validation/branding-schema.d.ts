@@ -11,6 +11,7 @@ export declare const hexColorSchema: z.ZodString;
 export declare const themeSchema: z.ZodObject<{
     primary: z.ZodString;
     secondary: z.ZodOptional<z.ZodString>;
+    accent: z.ZodOptional<z.ZodString>;
     background: z.ZodOptional<z.ZodString>;
     rounded: z.ZodDefault<z.ZodOptional<z.ZodBoolean>>;
     radius: z.ZodOptional<z.ZodString>;
@@ -18,11 +19,13 @@ export declare const themeSchema: z.ZodObject<{
     primary: string;
     rounded: boolean;
     secondary?: string | undefined;
+    accent?: string | undefined;
     background?: string | undefined;
     radius?: string | undefined;
 }, {
     primary: string;
     secondary?: string | undefined;
+    accent?: string | undefined;
     background?: string | undefined;
     rounded?: boolean | undefined;
     radius?: string | undefined;
@@ -35,6 +38,7 @@ export declare const brandingSchema: z.ZodObject<{
     theme: z.ZodObject<{
         primary: z.ZodString;
         secondary: z.ZodOptional<z.ZodString>;
+        accent: z.ZodOptional<z.ZodString>;
         background: z.ZodOptional<z.ZodString>;
         rounded: z.ZodDefault<z.ZodOptional<z.ZodBoolean>>;
         radius: z.ZodOptional<z.ZodString>;
@@ -42,11 +46,13 @@ export declare const brandingSchema: z.ZodObject<{
         primary: string;
         rounded: boolean;
         secondary?: string | undefined;
+        accent?: string | undefined;
         background?: string | undefined;
         radius?: string | undefined;
     }, {
         primary: string;
         secondary?: string | undefined;
+        accent?: string | undefined;
         background?: string | undefined;
         rounded?: boolean | undefined;
         radius?: string | undefined;
@@ -56,6 +62,7 @@ export declare const brandingSchema: z.ZodObject<{
         primary: string;
         rounded: boolean;
         secondary?: string | undefined;
+        accent?: string | undefined;
         background?: string | undefined;
         radius?: string | undefined;
     };
@@ -64,6 +71,7 @@ export declare const brandingSchema: z.ZodObject<{
     theme: {
         primary: string;
         secondary?: string | undefined;
+        accent?: string | undefined;
         background?: string | undefined;
         rounded?: boolean | undefined;
         radius?: string | undefined;
