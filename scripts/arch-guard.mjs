@@ -23,7 +23,7 @@ function getAllFiles(dir, fileList = []) {
         if (!['node_modules', '.git', '.next', 'dist'].includes(file)) {
           getAllFiles(fullPath, fileList);
         }
-      } else if (['.ts'].includes(path.extname(file))) {
+      } else if (['.ts', '.tsx'].includes(path.extname(file))) {
         fileList.push(fullPath);
       }
     });

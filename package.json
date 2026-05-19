@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && powershell -Command \"Copy-Item -Path src/styles -Destination dist -Recurse -Force\"",
     "clean": "rm -rf dist",
     "audit": "powershell ./scripts/abd-audit.ps1"
   },
@@ -26,8 +26,15 @@
   "dependencies": {
     "zod": "^3.23.8"
   },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "lucide-react": "^0.46.0"
+  },
   "devDependencies": {
     "typescript": "^5.4.5",
-    "@types/node": "^20.12.7"
+    "@types/node": "^20.12.7",
+    "react": "^19.0.0",
+    "@types/react": "^19.0.0",
+    "lucide-react": "^0.46.0"
   }
 }

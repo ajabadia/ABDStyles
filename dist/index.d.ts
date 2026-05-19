@@ -7,4 +7,6 @@
 export * from './utils/color-utils.js';
 export * from './validation/branding-schema.js';
 export * from './engine/css-generator.js';
+export * from './components/SystemSettings.js';
+export * from './components/TacticalSidebar.js';
 //# sourceMappingURL=index.d.ts.map
