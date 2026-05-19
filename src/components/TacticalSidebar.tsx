@@ -99,7 +99,7 @@ export function TacticalSidebar({
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          className="fixed inset-0 z-45 bg-black/70 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+          className="fixed inset-0 z-[45] bg-black/70 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
         />
       )}
 
