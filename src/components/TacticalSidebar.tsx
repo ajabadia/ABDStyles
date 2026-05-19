@@ -86,7 +86,10 @@ export function TacticalSidebar({
       <button
         aria-label="Toggle Tactical Menu"
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-6 left-6 z-40 p-3 rounded-none bg-background/80 backdrop-blur-md shadow-lg border border-border hover:border-primary/40 hover:bg-muted transition-all duration-200 cursor-pointer active:scale-95 focus:outline-none focus:ring-1 focus:ring-primary/40"
+        className={cn(
+          "fixed top-6 left-6 p-3 rounded-none bg-background/80 backdrop-blur-md shadow-lg border border-border hover:border-primary/40 hover:bg-muted transition-all duration-200 cursor-pointer active:scale-95 focus:outline-none focus:ring-1 focus:ring-primary/40",
+          isOpen ? "z-[55]" : "z-40"
+        )}
       >
         {isOpen ? (
           <X className="w-5 h-5 text-primary" />
