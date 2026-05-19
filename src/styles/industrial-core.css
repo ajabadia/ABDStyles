@@ -119,3 +119,144 @@
   border-color: hsl(var(--primary));
   box-shadow: 0 0 15px hsl(var(--primary) / 0.1);
 }
+
+/* 🔄 Animaciones de Consola */
+@keyframes console-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@utility animate-console-pulse {
+  animation: console-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 🖱️ Botones Adicionales */
+.btn-secondary-console {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid hsl(var(--border));
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: all 150ms ease-in-out;
+  border-radius: 0px;
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+}
+
+.btn-secondary-console:hover {
+  background: hsl(var(--muted) / 0.5);
+  border-color: hsl(var(--foreground) / 0.4);
+  color: hsl(var(--foreground));
+}
+
+.btn-destructive-console {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid hsl(var(--destructive) / 0.5);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: all 150ms ease-in-out;
+  border-radius: 0px;
+  background: transparent;
+  color: hsl(var(--destructive));
+  cursor: pointer;
+}
+
+.btn-destructive-console:hover {
+  background: hsl(var(--destructive) / 0.1);
+  border-color: hsl(var(--destructive));
+  box-shadow: 0 0 15px hsl(var(--destructive) / 0.1);
+}
+
+.btn-skip-console {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed hsl(var(--border));
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: all 150ms ease-in-out;
+  border-radius: 0px;
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+}
+
+.btn-skip-console:hover {
+  border-style: solid;
+  border-color: hsl(var(--primary) / 0.5);
+  color: hsl(var(--primary));
+}
+
+/* 📝 Campos de Formulario Industriales */
+.input-console {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: hsl(var(--card) / 0.5);
+  border: 1px solid hsl(var(--border));
+  border-radius: 0px;
+  color: hsl(var(--foreground));
+  font-family: var(--font-mono);
+  font-size: 11px;
+  transition: all 200ms ease-in-out;
+  outline: none;
+}
+
+.input-console:focus {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 8px hsl(var(--primary) / 0.15);
+  background: hsl(var(--card));
+}
+
+.input-console::placeholder {
+  color: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* 🗺️ Indicadores de Estado y Breadcrumbs */
+.console-breadcrumb {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+.console-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 0px;
+  display: inline-block;
+}
+
+.console-status-dot.online {
+  background-color: hsl(var(--primary));
+  box-shadow: 0 0 8px hsl(var(--primary));
+}
+
+.console-status-dot.warning {
+  background-color: hsl(var(--warning));
+  box-shadow: 0 0 8px hsl(var(--warning));
+}
+
+.console-status-dot.error {
+  background-color: hsl(var(--destructive));
+  box-shadow: 0 0 8px hsl(var(--destructive));
+}
+
