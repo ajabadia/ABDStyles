@@ -4,14 +4,14 @@ This guide provides **ready-to-use, copy-pasteable prompts** designed to instruc
 
 ---
 
-## 🛰️ Prompt 1: Satelite UI Theme Integration (e.g. for `ABDQuiz`, `ABDDocumentation`, etc.)
+## 🛰️ Prompt 1: Satelite UI Theme & Components Integration (e.g. for `ABDQuiz`, `ABDAuth`, `ABDtenantGobernance`, etc.)
 
-Copy and paste this prompt when instructing an agent working on a satellite application to connect its layout to the central branding engine:
+Copy and paste this prompt when instructing an agent working on a satellite application to connect its layout and visual chassis to the central `@abd/styles` library:
 
 ```markdown
-# ESPECIFICACIÓN: Integración del Motor Central de Estilos (@abd/styles)
+# ESPECIFICACIÓN: Integración del Chasis Visual y Componentes Compartidos (@abd/styles)
 
-Estamos integrando el sistema central de marca blanca dinámica `@abd/styles` en esta aplicación para que cargue los colores base (primario, secundario, bordes, etc.) y logotipos del Tenant activo en tiempo real, de manera accesible (WCAG) y con latencia cero (sin parpadeo visual).
+Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styles` en esta aplicación para unificar la hoja de estilos global, eliminar la duplicación de código en la navegación y permitir que la interfaz mute según el Tenant activo en tiempo real.
 
 ## REQUERIMIENTOS TÉCNICOS:
 
@@ -20,9 +20,17 @@ Estamos integrando el sistema central de marca blanca dinámica `@abd/styles` en
      ```json
      "@abd/styles": "git+https://github.com/ajabadia/ABDStyles.git#main"
      ```
-   - Ejecuta `npm install` para importar el módulo.
+   - Ejecuta `npm install --legacy-peer-deps` (para evitar conflictos de pares de React 19 con Lucide Icons).
 
-2. **Inyección en Servidor (SSR) en el Layout Raíz**:
+2. **Unificación de la Hoja de Estilos (`globals.css`)**:
+   - Limpia tu archivo `globals.css` eliminando declaraciones locales duplicadas (variables HSL base, scrollbars, clases de botones de consola como `.btn-primary-console` o `.btn-skip-console`, y utilidades de fondo como `.bg-industrial-grid`, `.mask-industrial-fade`, `.glass-panel` y `.bg-grain`).
+   - Importa la hoja de estilos centralizada directamente:
+     ```css
+     @import "tailwindcss";
+     @import "@abd/styles/dist/styles/industrial-core.css";
+     ```
+
+3. **Inyección en Servidor (SSR) en el Layout Raíz**:
    - En `src/app/[locale]/layout.tsx` (o tu layout raíz), importa la función generadora:
      ```typescript
      import { generateTenantCss } from '@abd/styles';
@@ -38,17 +46,56 @@ Estamos integrando el sistema central de marca blanca dinámica `@abd/styles` en
      </head>
      ```
 
-3. **Uso de Imagen de Logotipo Dinámica**:
-   - Localiza la cabecera o barra lateral de navegación y sustituye el logotipo estático por una etiqueta de imagen que cargue `tenant.branding.logoUrl` con un fallback seguro hacia la imagen corporativa local si no hay tenant activo:
+4. **Consumo de Componentes React Reutilizables**:
+   - Reemplaza los componentes locales redundantes `TacticalSidebar` y `SystemSettings` importando las versiones unificadas de la librería:
+     ```typescript
+     import { TacticalSidebar, SystemSettings } from '@abd/styles';
+     ```
+   - **TacticalSidebar**: Pásale la lista dinámica de enlaces (`links`), los datos de sesión del usuario (`user`), la función de logout local y el componente Link nativo de tu framework de enrutamiento (ej. `Link` de `@/i18n/routing` o `next/link`):
      ```tsx
-     <img src={tenant?.branding?.logoUrl || '/default-logo.svg'} alt="Logo Corporativo" />
+     import Link from "@/i18n/routing"; // O el link correspondiente
+
+     <TacticalSidebar
+       user={{ name: session.user.name, role: session.user.role, tenantId: session.user.tenantId, email: session.user.email }}
+       links={[
+         { href: "/dashboard", label: t("overview"), icon: <LayoutDashboard size={14} /> },
+         // ... otros enlaces
+       ]}
+       logoUrl={tenant?.branding?.logoUrl}
+       LinkComponent={Link}
+       onLogout={() => signOut({ callbackUrl: "/" })}
+     />
+     ```
+   - **SystemSettings**: Pásale las traducciones locales calculadas por `next-intl` (evitando importaciones directas en el componente) y el callback para delegar los cambios de idioma y tema (soportando `next-themes` o cambio autónomo):
+     ```tsx
+     import { useTheme } from "next-themes";
+     const { theme, setTheme } = useTheme();
+
+     <SystemSettings
+       locale={locale}
+       onLocaleChange={(loc) => router.replace(pathname, { locale: loc })}
+       theme={theme}
+       onThemeChange={setTheme}
+       translations={{
+         title: t("settings.title"),
+         close: t("settings.close"),
+         language: t("settings.language"),
+         theme: t("settings.theme"),
+         themeLight: t("settings.theme_light"),
+         themeDark: t("settings.theme_dark"),
+         themeSystem: t("settings.theme_system"),
+         logout: t("settings.logout"),
+       }}
+       isAuthenticated={status === "authenticated"}
+       onLogout={() => signOut({ callbackUrl: "/" })}
+     />
      ```
 
-4. **Alineación con Clases Semánticas**:
-   - Asegúrate de que las vistas y componentes utilicen clases semánticas de Tailwind v4 (`bg-primary`, `text-primary-foreground`, `border-border`, `rounded-[var(--radius)]`) en lugar de colores hardcodeados (como `bg-cyan-500` o `bg-blue-600`), garantizando que la interfaz entera mute de color de forma inmediata y automática al aplicar los estilos del Tenant.
+5. **Alineación con Clases Semánticas**:
+   - Asegúrate de que las vistas y componentes utilicen las clases semánticas unificadas (ej: `.btn-primary-console`, `.btn-secondary-console`, `.btn-skip-console`, `.btn-destructive-console`, `.input-console`, `.console-breadcrumb`, `.console-status-dot`) y las variables del tema de Tailwind v4 en lugar de colores fijos.
 
-5. **Verificación**:
-   - Levanta el servidor local (`npm run dev`) y simula subdominios accediendo a `http://bomberos.lvh.me:3300` o `http://policia.lvh.me:3300` para comprobar que la interfaz muta de color instantáneamente sin parpadeos visuales en la recarga.
+6. **Verificación**:
+   - Levanta el servidor local (`npm run dev`) y simula subdominios accediendo a `http://bomberos.lvh.me:3300` o `http://policia.lvh.me:3300` para comprobar que la interfaz muta de color instantáneamente sin parpadeos visuales en la recarga y que los componentes de navegación funcionan idénticamente.
 ```
 
 ---
