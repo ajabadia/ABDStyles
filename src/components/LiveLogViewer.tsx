@@ -3,7 +3,8 @@
 'use client';
 
 import React from 'react';
-import { useLivePolling, AuditLog } from '../hooks/useLivePolling.js';
+import { useLivePolling } from '../hooks/useLivePolling.js';
+import type { AuditLog } from '../hooks/useLivePolling.js';
 import { featureFlags } from '../config/featureFlags.js';
 import { ActionBadge } from './ActionBadge.js';
 import { AuditDeltaViewer } from './AuditDeltaViewer.js';

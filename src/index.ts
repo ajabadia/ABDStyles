@@ -12,3 +12,4 @@ export * from './components/SystemSettings.js';
 export * from './components/TacticalSidebar.js';
 export * from './components/LiveLogViewer.js';
 export * from './config/featureFlags.js';
+export * from './components/CommandPalette.js';
