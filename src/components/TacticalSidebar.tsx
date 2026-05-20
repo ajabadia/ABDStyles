@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Menu, X, Shield, LogOut } from "lucide-react";
@@ -37,9 +39,15 @@ export interface TacticalSidebarProps {
   logoUrl?: string | null;
   onLogout: () => void;
   brandName?: string;
+  /** Component to use for navigation links (e.g. next/link). Falls back to <a>. */
   LinkComponent?: React.ComponentType<LinkComponentProps>;
   translations?: TacticalSidebarTranslations;
+  /** Currently active path — used to highlight the active link. */
   activeHref?: string;
+  /** URL for the logo/brand link at the top of the sidebar. Defaults to "/dashboard". */
+  homeHref?: string;
+  /** Aria-label for the hamburger toggle button. */
+  menuAriaLabel?: string;
 }
 
 const defaultTranslations: Required<TacticalSidebarTranslations> = {
@@ -59,6 +67,8 @@ export function TacticalSidebar({
   LinkComponent,
   translations,
   activeHref,
+  homeHref = "/dashboard",
+  menuAriaLabel = "Toggle Tactical Menu",
 }: TacticalSidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -84,7 +94,9 @@ export function TacticalSidebar({
     <>
       {/* 🍔 Botón Disparador (Floating Trigger) */}
       <button
-        aria-label="Toggle Tactical Menu"
+        aria-label={menuAriaLabel}
+        aria-expanded={isOpen}
+        aria-controls="tactical-sidebar-panel"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "fixed top-6 left-6 p-3 rounded-none bg-background/80 backdrop-blur-md shadow-lg border border-border hover:border-primary/40 hover:bg-muted transition-all duration-200 cursor-pointer active:scale-95 focus:outline-none focus:ring-1 focus:ring-primary/40",
@@ -101,6 +113,7 @@ export function TacticalSidebar({
       {/* 🌑 Velo de Fondo (Dark Overlay Backdrop) */}
       {isOpen && (
         <div
+          aria-hidden="true"
           onClick={() => setIsOpen(false)}
           className="fixed inset-0 z-[45] bg-black/70 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
         />
@@ -108,6 +121,9 @@ export function TacticalSidebar({
 
       {/* 🗄️ Contenedor del Drawer (Sidebar Panel) */}
       <aside
+        id="tactical-sidebar-panel"
+        role="navigation"
+        aria-label="Tactical Navigation"
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-80 bg-background border-r border-border shadow-2xl flex flex-col p-6 transition-transform duration-300 ease-in-out transform rounded-none",
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -116,7 +132,7 @@ export function TacticalSidebar({
         {/* Header inside Sidebar */}
         <div className="flex justify-between items-center mb-8 pt-12 border-b border-border pb-4">
           <Link
-            href="/dashboard"
+            href={homeHref}
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3"
           >
@@ -136,7 +152,7 @@ export function TacticalSidebar({
             </span>
           </Link>
           <button
-            aria-label="Close"
+            aria-label="Close navigation"
             onClick={() => setIsOpen(false)}
             className="p-1.5 hover:bg-muted border border-border rounded-none text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
           >
@@ -147,10 +163,10 @@ export function TacticalSidebar({
         {/* 🧭 Navigation Links (Tactical Links) */}
         <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
           {links.map((link) => {
-            const isActive = activeHref ? (
-              activeHref === link.href || 
-              (link.href !== "/dashboard" && activeHref.startsWith(link.href))
-            ) : false;
+            const isActive = activeHref
+              ? activeHref === link.href ||
+                (link.href !== homeHref && activeHref.startsWith(link.href))
+              : false;
 
             return (
               <Link
@@ -204,7 +220,7 @@ export function TacticalSidebar({
             </div>
 
             <button
-              aria-label="Logout"
+              aria-label={t.logoutBtn}
               onClick={onLogout}
               className="w-full flex items-center justify-center gap-2 px-3 py-2 border border-border text-[9px] font-mono font-black uppercase tracking-widest transition-all rounded-none hover:text-red-400 hover:bg-red-500/10 hover:border-red-500/20 cursor-pointer"
             >

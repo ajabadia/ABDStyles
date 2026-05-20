@@ -29,9 +29,15 @@ export interface TacticalSidebarProps {
     logoUrl?: string | null;
     onLogout: () => void;
     brandName?: string;
+    /** Component to use for navigation links (e.g. next/link). Falls back to <a>. */
     LinkComponent?: React.ComponentType<LinkComponentProps>;
     translations?: TacticalSidebarTranslations;
+    /** Currently active path — used to highlight the active link. */
     activeHref?: string;
+    /** URL for the logo/brand link at the top of the sidebar. Defaults to "/dashboard". */
+    homeHref?: string;
+    /** Aria-label for the hamburger toggle button. */
+    menuAriaLabel?: string;
 }
-export declare function TacticalSidebar({ user, links, logoUrl, onLogout, brandName, LinkComponent, translations, activeHref, }: TacticalSidebarProps): import("react/jsx-runtime").JSX.Element;
+export declare function TacticalSidebar({ user, links, logoUrl, onLogout, brandName, LinkComponent, translations, activeHref, homeHref, menuAriaLabel, }: TacticalSidebarProps): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=TacticalSidebar.d.ts.map

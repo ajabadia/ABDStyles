@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from "react";
 import { useState, useRef, useEffect } from "react";
 import { Settings, X, LogIn, LogOut, Sun, Moon, Monitor, Languages, Check } from "lucide-react";
@@ -19,20 +21,25 @@ export interface SystemSettingsProps {
   locale: string;
   onLocaleChange: (locale: string) => void;
   locales?: string[];
-  
+
   // Optional theme state/callback to delegate to parent (e.g. next-themes)
   theme?: string;
   onThemeChange?: (theme: string) => void;
-  
+
   // Custom translatable strings
   translations?: SystemSettingsTranslations;
-  
+
   // Authentication props
   isAuthenticated?: boolean;
+  /** Callback for custom login logic. If omitted, falls back to signinUrl navigation. */
   onLogin?: () => void;
+  /** Callback for custom logout logic. If omitted, falls back to logoutUrl navigation. */
   onLogout?: () => void;
+  /** URL to navigate to when logging out (fallback if onLogout is not provided). */
   logoutUrl?: string;
-  
+  /** URL to navigate to when logging in (fallback if onLogin is not provided). */
+  signinUrl?: string;
+
   // Optional version indicator
   versionSignature?: string;
 }
@@ -60,6 +67,7 @@ export function SystemSettings({
   onLogin,
   onLogout,
   logoutUrl = "/api/auth/logout",
+  signinUrl = "/api/auth/signin",
   versionSignature = "ABD_SYSTEM_V1.0",
 }: SystemSettingsProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -252,7 +260,7 @@ export function SystemSettings({
               </button>
             ) : (
               <a
-                href="/api/auth/signin"
+                href={signinUrl}
                 className="w-full flex items-center gap-3 px-3 py-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 transition-all duration-200 text-[10px] font-bold uppercase cursor-pointer rounded-none"
               >
                 <LogIn size={14} />

@@ -17,10 +17,15 @@ export interface SystemSettingsProps {
     onThemeChange?: (theme: string) => void;
     translations?: SystemSettingsTranslations;
     isAuthenticated?: boolean;
+    /** Callback for custom login logic. If omitted, falls back to signinUrl navigation. */
     onLogin?: () => void;
+    /** Callback for custom logout logic. If omitted, falls back to logoutUrl navigation. */
     onLogout?: () => void;
+    /** URL to navigate to when logging out (fallback if onLogout is not provided). */
     logoutUrl?: string;
+    /** URL to navigate to when logging in (fallback if onLogin is not provided). */
+    signinUrl?: string;
     versionSignature?: string;
 }
-export declare function SystemSettings({ locale, onLocaleChange, locales, theme, onThemeChange, translations, isAuthenticated, onLogin, onLogout, logoutUrl, versionSignature, }: SystemSettingsProps): import("react/jsx-runtime").JSX.Element;
+export declare function SystemSettings({ locale, onLocaleChange, locales, theme, onThemeChange, translations, isAuthenticated, onLogin, onLogout, logoutUrl, signinUrl, versionSignature, }: SystemSettingsProps): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=SystemSettings.d.ts.map
