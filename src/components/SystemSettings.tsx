@@ -39,6 +39,8 @@ export interface SystemSettingsProps {
   logoutUrl?: string;
   /** URL to navigate to when logging in (fallback if onLogin is not provided). */
   signinUrl?: string;
+  /** Whether to show the login button when not authenticated. Defaults to true. */
+  showLogin?: boolean;
 
   // Optional version indicator
   versionSignature?: string;
@@ -68,6 +70,7 @@ export function SystemSettings({
   onLogout,
   logoutUrl = "/api/auth/logout",
   signinUrl = "/api/auth/signin",
+  showLogin = true,
   versionSignature = "ABD_SYSTEM_V1.0",
 }: SystemSettingsProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -229,45 +232,47 @@ export function SystemSettings({
           </div>
 
           {/* Auth Section */}
-          <div className="mt-6 pt-4 border-t border-border">
-            {isAuthenticated ? (
-              onLogout ? (
+          {(isAuthenticated || showLogin) && (
+            <div className="mt-6 pt-4 border-t border-border">
+              {isAuthenticated ? (
+                onLogout ? (
+                  <button
+                    aria-label={t.logout}
+                    onClick={onLogout}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-all duration-200 text-[10px] font-bold uppercase cursor-pointer rounded-none"
+                  >
+                    <LogOut size={14} />
+                    <span>{t.logout}</span>
+                  </button>
+                ) : (
+                  <a
+                    href={logoutUrl}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-all duration-200 text-[10px] font-bold uppercase cursor-pointer rounded-none"
+                  >
+                    <LogOut size={14} />
+                    <span>{t.logout}</span>
+                  </a>
+                )
+              ) : onLogin ? (
                 <button
-                  aria-label={t.logout}
-                  onClick={onLogout}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-all duration-200 text-[10px] font-bold uppercase cursor-pointer rounded-none"
+                  aria-label={t.login}
+                  onClick={onLogin}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 transition-all duration-200 text-[10px] font-bold uppercase cursor-pointer rounded-none"
                 >
-                  <LogOut size={14} />
-                  <span>{t.logout}</span>
+                  <LogIn size={14} />
+                  <span>{t.login}</span>
                 </button>
               ) : (
                 <a
-                  href={logoutUrl}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-all duration-200 text-[10px] font-bold uppercase cursor-pointer rounded-none"
+                  href={signinUrl}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 transition-all duration-200 text-[10px] font-bold uppercase cursor-pointer rounded-none"
                 >
-                  <LogOut size={14} />
-                  <span>{t.logout}</span>
+                  <LogIn size={14} />
+                  <span>{t.login}</span>
                 </a>
-              )
-            ) : onLogin ? (
-              <button
-                aria-label={t.login}
-                onClick={onLogin}
-                className="w-full flex items-center gap-3 px-3 py-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 transition-all duration-200 text-[10px] font-bold uppercase cursor-pointer rounded-none"
-              >
-                <LogIn size={14} />
-                <span>{t.login}</span>
-              </button>
-            ) : (
-              <a
-                href={signinUrl}
-                className="w-full flex items-center gap-3 px-3 py-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 transition-all duration-200 text-[10px] font-bold uppercase cursor-pointer rounded-none"
-              >
-                <LogIn size={14} />
-                <span>{t.login}</span>
-              </a>
-            )}
-          </div>
+              )}
+            </div>
+          )}
 
           {/* Footer Version Signature */}
           <div className="mt-4 text-center">

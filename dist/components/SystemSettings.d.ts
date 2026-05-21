@@ -25,7 +25,9 @@ export interface SystemSettingsProps {
     logoutUrl?: string;
     /** URL to navigate to when logging in (fallback if onLogin is not provided). */
     signinUrl?: string;
+    /** Whether to show the login button when not authenticated. Defaults to true. */
+    showLogin?: boolean;
     versionSignature?: string;
 }
-export declare function SystemSettings({ locale, onLocaleChange, locales, theme, onThemeChange, translations, isAuthenticated, onLogin, onLogout, logoutUrl, signinUrl, versionSignature, }: SystemSettingsProps): import("react/jsx-runtime").JSX.Element;
+export declare function SystemSettings({ locale, onLocaleChange, locales, theme, onThemeChange, translations, isAuthenticated, onLogin, onLogout, logoutUrl, signinUrl, showLogin, versionSignature, }: SystemSettingsProps): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=SystemSettings.d.ts.map
