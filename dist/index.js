@@ -8,6 +8,7 @@ export * from './utils/color-utils.js';
 export * from './validation/branding-schema.js';
 export * from './engine/css-generator.js';
 export * from './components/SystemSettings.js';
+export * from './components/TenantSelector.js';
 export * from './components/TacticalSidebar.js';
 export * from './components/LiveLogViewer.js';
 export * from './config/featureFlags.js';
