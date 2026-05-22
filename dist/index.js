@@ -13,4 +13,9 @@ export * from './components/TacticalSidebar.js';
 export * from './components/LiveLogViewer.js';
 export * from './config/featureFlags.js';
 export * from './components/CommandPalette.js';
+export * from './components/ThemeScript.js';
+export * from './components/UserIdentity.js';
+export * from './components/Footer.js';
+export * from './components/AdminPageHeader.js';
+export * from './components/HeroHeader.js';
 //# sourceMappingURL=index.js.map

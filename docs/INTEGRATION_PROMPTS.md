@@ -11,7 +11,7 @@ Copy and paste this prompt when instructing an agent working on a satellite appl
 ```markdown
 # ESPECIFICACIÓN: Integración del Chasis Visual y Componentes Compartidos (@abd/styles)
 
-Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styles` en esta aplicación para unificar la hoja de estilos global, eliminar la duplicación de código en la navegación y permitir que la interfaz mute según el Tenant activo en tiempo real.
+Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styles` en esta aplicación para unificar la hoja de estilos global, eliminar la duplicación de código en la navegación y permitir que la interfaz mute según el Tenant activo en tiempo real. Esto incluye la inyección de componentes troncales como `TenantSelector`, `UserIdentity`, `CommandPalette`, `Footer`, `AdminPageHeader` y `HeroHeader`.
 
 ## REQUERIMIENTOS TÉCNICOS:
 
@@ -77,55 +77,68 @@ Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styl
 
 4. **Consumo de Componentes React Reutilizables (Patrón Client Wrapper)**:
    - Dado que los componentes de navegación dependen de callbacks de enrutamiento y hooks del lado del cliente (`useTheme`, `useLocale`, `useSession`), no deben instanciarse directamente dentro de Server Components (como el layout raíz).
-   - **Mejor Práctica**: Mantén un wrapper cliente local (`"use client"`) en tu proyecto satélite (ej. `src/components/ui/SystemSettings.tsx` y `src/components/TacticalSidebar.tsx`) que envuelva a los componentes importados de `@abd/styles` e inyecte los hooks y traducción locales de forma segura:
+   - **Mejor Práctica**: Mantén un wrapper cliente local (`"use client"`) en tu proyecto satélite (ej. `src/components/ui/TenantSelector.tsx` y `src/components/layout/UserIdentity.tsx`) que envuelva a los componentes importados de `@abd/styles` e inyecte los hooks locales de forma segura:
      ```typescript
-     // src/components/ui/SystemSettings.tsx
+     // src/components/layout/UserIdentity.tsx
      "use client";
 
      import { useTheme } from "next-themes";
      import { useLocale, useTranslations } from "next-intl";
      import { usePathname, useRouter } from "@/i18n/routing";
-     import { useSession, signIn, signOut } from "next-auth/react";
-     import { SystemSettings as SharedSystemSettings } from '@abd/styles';
+     import { useSession, signOut } from "next-auth/react";
+     import { UserIdentity as SharedUserIdentity } from '@abd/styles';
+     import Link from "next/link"; // O el LocalizedLink
 
-     export function SystemSettings() {
+     export function UserIdentity() {
        const t = useTranslations("settings");
        const { theme, setTheme } = useTheme();
-       const { status } = useSession();
+       const { data: session } = useSession();
        const locale = useLocale();
        const router = useRouter();
        const pathname = usePathname();
 
        return (
-         <SharedSystemSettings
+         <SharedUserIdentity
+           user={session?.user}
            locale={locale}
            onLocaleChange={(loc) => router.replace(pathname, { locale: loc })}
            theme={theme}
            onThemeChange={setTheme}
            translations={{
-             title: t("title"),
-             close: t("close"),
-             language: t("language"),
-             theme: t("theme"),
-             // Ojo con el mapeo si tu JSON usa claves snake_case:
-             themeLight: t("theme_light"),
-             themeDark: t("theme_dark"),
-             themeSystem: t("theme_system"),
+             systemSettings: t("title"),
              logout: t("logout"),
-             login: t("login"),
            }}
-           isAuthenticated={status === "authenticated"}
            onLogout={() => signOut({ callbackUrl: "/" })}
+           LinkComponent={Link}
          />
        );
      }
      ```
-     De este modo, tu layout de servidor puede instanciar el componente local wrapper de manera limpia sin romper los flujos de renderizado.
+     De este modo, tu layout de servidor puede instanciar el componente local wrapper de manera limpia sin romper los flujos de renderizado. Otros componentes compartidos disponibles incluyen `TenantSelector`, `Footer`, `CommandPalette` y `TacticalSidebar`.
 
-5. **Alineación con Clases Semánticas**:
+5. **Centralización de Cabeceras (Headers)**:
+   - Para las **landing pages** (portadas públicas o de inicio), utiliza el componente `HeroHeader` de `@abd/styles`. Éste acepta `statusText` (ej: "SYSTEM ACTIVE"), `title` (el título principal gigante, soporta `ReactNode`) y `description`.
+   - Para las **consolas de administración** (rutas `/admin/*`), utiliza el componente `AdminPageHeader`. Éste acepta `icon` (ícono de `lucide-react`), `breadcrumb`, `title`, `description`, `backButton` (nodo opcional para el botón de retroceso) y `children` (para inyectar acciones o botones extra a la derecha).
+   - Ejemplo de uso en admin:
+     ```tsx
+     import { AdminPageHeader } from '@abd/styles';
+     import { FolderOpen, ArrowLeft } from 'lucide-react';
+     
+     <AdminPageHeader
+       icon={FolderOpen}
+       breadcrumb={<>CONSOLA • SECCIÓN</>}
+       title="Título de Sección"
+       description="Descripción detallada."
+       backButton={<Link href="/admin"><ArrowLeft size={14} /></Link>}
+     >
+       <Button>Nueva Acción</Button>
+     </AdminPageHeader>
+     ```
+
+6. **Alineación con Clases Semánticas**:
    - Asegúrate de que las vistas y componentes utilicen las clases semánticas unificadas (ej: `.btn-primary-console`, `.btn-secondary-console`, `.btn-skip-console`, `.btn-destructive-console`, `.input-console`, `.console-breadcrumb`, `.console-status-dot`) y las variables del tema de Tailwind v4 en lugar de colores fijos.
 
-6. **Verificación**:
+7. **Verificación**:
    - Levanta el servidor local (`npm run dev`) y simula subdominios accediendo a `http://bomberos.lvh.me:3300` o `http://policia.lvh.me:3300` para comprobar que la interfaz muta de color instantáneamente sin parpadeos visuales en la recarga y que los componentes de navegación funcionan idénticamente.
 ```
 

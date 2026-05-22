@@ -9,7 +9,7 @@ import { featureFlags } from '../config/featureFlags.js';
 import { ActionBadge } from './ActionBadge.js';
 import { AuditDeltaViewer } from './AuditDeltaViewer.js';
 // Simple translation fallback
-const t = (key: string, opts?: any) => opts?.defaultMessage || key;
+const t = (key: string, opts?: { defaultMessage?: string }) => opts?.defaultMessage || key;
 import { Activity, Calendar, User, Wifi, WifiOff, ShieldCheck, BookOpen, Building2 } from 'lucide-react';
 
 interface LiveLogViewerProps {
@@ -64,7 +64,7 @@ export function LiveLogViewer({ tenantId }: LiveLogViewerProps) {
               >
                 <div className="flex justify-between items-center text-sm">
                   <div className="flex items-center gap-2">
-                    <ActionBadge action={log.action as any} />
+                    <ActionBadge action={log.action as string} />
                     <span className="font-mono text-xs bg-background border border-border px-2 py-0.5 rounded">
                       ID: {log._id?.slice(-6) ?? '------'}
                     </span>
