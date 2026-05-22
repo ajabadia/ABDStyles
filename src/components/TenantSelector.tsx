@@ -5,6 +5,11 @@ import { useState, useRef, useEffect } from "react";
 import { Building2, ChevronDown, Search, X, Check, Loader2 } from "lucide-react";
 import { cn } from "./utils.js";
 
+export interface ContextOption {
+  id: string;
+  name: string;
+}
+
 export interface TenantOption {
   tenantId: string;
   name: string;
@@ -17,12 +22,18 @@ export interface TenantSelectorTranslations {
   noTenantsFound?: string;
   activeTenantBadge?: string;
   selectTenant?: string;
+  spacesTitle?: string;
+  groupsTitle?: string;
 }
 
 export interface TenantSelectorProps {
   activeTenantId: string;
   tenants: TenantOption[];
   onTenantChange?: (tenantId: string) => void;
+  spaces?: ContextOption[];
+  groups?: ContextOption[];
+  activeContextId?: string;
+  onContextChange?: (contextId: string, type: 'space' | 'group') => void;
   userRole?: string;
   translations?: TenantSelectorTranslations;
   isLoading?: boolean;
@@ -34,12 +45,18 @@ const defaultTranslations: Required<TenantSelectorTranslations> = {
   noTenantsFound: "No se encontraron organizaciones",
   activeTenantBadge: "ORGANIZACIÓN ACTIVA",
   selectTenant: "Seleccionar organización",
+  spacesTitle: "ESPACIOS",
+  groupsTitle: "GRUPOS",
 };
 
 export function TenantSelector({
   activeTenantId,
   tenants = [],
   onTenantChange,
+  spaces = [],
+  groups = [],
+  activeContextId,
+  onContextChange,
   userRole = "USER",
   translations,
   isLoading = false,
@@ -53,7 +70,8 @@ export function TenantSelector({
 
   // Detect if user has privilege to switch context
   const isSuperAdmin = userRole === "SUPER_ADMIN";
-  const isInteractive = isSuperAdmin || tenants.length > 1;
+  const hasContexts = spaces.length > 0 || groups.length > 0;
+  const isInteractive = isSuperAdmin || tenants.length > 1 || hasContexts;
 
   // Resolve active tenant object
   const activeTenant = tenants.find((ten) => ten.tenantId === activeTenantId) || {
@@ -61,11 +79,28 @@ export function TenantSelector({
     name: activeTenantId,
   };
 
+  // Resolve active context object
+  const activeContext = spaces.find(s => s.id === activeContextId) || groups.find(g => g.id === activeContextId);
+  const displayLabel = activeContext ? `${activeTenant.name} / ${activeContext.name}` : activeTenant.name;
+
   // Filter tenants based on search input
   const filteredTenants = tenants.filter(
     (ten) =>
       ten.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ten.tenantId.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Filter contexts based on search input
+  const filteredSpaces = spaces.filter(
+    (space) =>
+      space.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      space.id.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredGroups = groups.filter(
+    (group) =>
+      group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      group.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   useEffect(() => {
@@ -96,7 +131,7 @@ export function TenantSelector({
       <div className="flex items-center gap-2 px-3 py-2 border border-border bg-background/50 text-[10px] font-bold text-muted-foreground">
         <Building2 size={14} className="animate-pulse" />
         <span className="truncate max-w-[120px] uppercase tracking-wider">
-          {activeTenant.name}
+          {displayLabel}
         </span>
       </div>
     );
@@ -111,7 +146,7 @@ export function TenantSelector({
       >
         <Building2 size={13} className="text-muted-foreground/60 shrink-0" />
         <span className="truncate max-w-[140px]">
-          {activeTenant.name}
+          {displayLabel}
         </span>
       </div>
     );
@@ -137,7 +172,7 @@ export function TenantSelector({
             <Building2 size={13} className={cn("shrink-0 transition-colors", isOpen ? "text-primary" : "text-muted-foreground")} />
           )}
           <span className="truncate text-left">
-            {activeTenant.name}
+            {displayLabel}
           </span>
         </div>
         <ChevronDown 
@@ -185,51 +220,133 @@ export function TenantSelector({
             />
           </div>
 
-          {/* Tenants List */}
-          <div className="max-h-48 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
-            {isLoading ? (
-              <div className="flex items-center justify-center py-6 text-[10px] text-muted-foreground font-sans gap-2">
-                <Loader2 size={12} className="animate-spin text-primary" />
-                Cargando organizaciones...
+            {/* Tenants List */}
+            <div className="max-h-48 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+              {isLoading ? (
+                <div className="flex items-center justify-center py-6 text-[10px] text-muted-foreground font-sans gap-2">
+                  <Loader2 size={12} className="animate-spin text-primary" />
+                  Cargando organizaciones...
+                </div>
+              ) : filteredTenants.length === 0 ? (
+                <div className="text-center py-4 text-[10px] text-muted-foreground font-sans uppercase tracking-wider">
+                  {t.noTenantsFound}
+                </div>
+              ) : (
+                filteredTenants.map((ten) => {
+                  const isSelected = ten.tenantId === activeTenantId;
+                  return (
+                    <button
+                      key={ten.tenantId}
+                      type="button"
+                      role="option"
+                      aria-selected={isSelected}
+                      onClick={() => {
+                        if (onTenantChange && !isSelected) {
+                          onTenantChange(ten.tenantId);
+                        }
+                        setIsOpen(false);
+                      }}
+                      className={cn(
+                        "w-full text-left px-2.5 py-2 text-[10px] uppercase font-sans tracking-wide transition-all duration-150 flex items-center justify-between border cursor-pointer rounded-none",
+                        isSelected
+                          ? "bg-primary/10 border-primary/20 text-primary font-bold"
+                          : "bg-card/30 border-transparent hover:bg-muted hover:border-border/50 text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      <div className="flex flex-col truncate pr-2">
+                        <span className="font-bold truncate">{ten.name}</span>
+                        <span className="text-[8px] opacity-60 font-mono lowercase tracking-normal">
+                          @{ten.tenantId}
+                        </span>
+                      </div>
+                      {isSelected && <Check size={12} className="text-primary shrink-0 ml-2" />}
+                    </button>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Contexts (Spaces) */}
+            {filteredSpaces.length > 0 && (
+              <div className="mt-3 pt-2 border-t border-border/50">
+                <div className="flex items-center gap-1.5 mb-1.5 px-1">
+                  <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground italic">
+                    {t.spacesTitle}
+                  </span>
+                </div>
+                <div className="space-y-1">
+                  {filteredSpaces.map((space) => {
+                    const isSelected = space.id === activeContextId;
+                    return (
+                      <button
+                        key={space.id}
+                        type="button"
+                        role="option"
+                        aria-selected={isSelected}
+                        onClick={() => {
+                          if (onContextChange && !isSelected) {
+                            onContextChange(space.id, 'space');
+                          }
+                          setIsOpen(false);
+                        }}
+                        className={cn(
+                          "w-full text-left px-2.5 py-1.5 text-[9px] uppercase font-sans tracking-wide transition-all duration-150 flex items-center justify-between border cursor-pointer rounded-none",
+                          isSelected
+                            ? "bg-primary/10 border-primary/20 text-primary font-bold"
+                            : "bg-card/20 border-transparent hover:bg-muted hover:border-border/50 text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        <div className="flex flex-col truncate pr-2">
+                          <span className="font-bold truncate">{space.name}</span>
+                        </div>
+                        {isSelected && <Check size={10} className="text-primary shrink-0 ml-2" />}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            ) : filteredTenants.length === 0 ? (
-              <div className="text-center py-4 text-[10px] text-muted-foreground font-sans uppercase tracking-wider">
-                {t.noTenantsFound}
-              </div>
-            ) : (
-              filteredTenants.map((ten) => {
-                const isSelected = ten.tenantId === activeTenantId;
-                return (
-                  <button
-                    key={ten.tenantId}
-                    type="button"
-                    role="option"
-                    aria-selected={isSelected}
-                    onClick={() => {
-                      if (onTenantChange && !isSelected) {
-                        onTenantChange(ten.tenantId);
-                      }
-                      setIsOpen(false);
-                    }}
-                    className={cn(
-                      "w-full text-left px-2.5 py-2 text-[10px] uppercase font-sans tracking-wide transition-all duration-150 flex items-center justify-between border cursor-pointer rounded-none",
-                      isSelected
-                        ? "bg-primary/10 border-primary/20 text-primary font-bold"
-                        : "bg-card/30 border-transparent hover:bg-muted hover:border-border/50 text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    <div className="flex flex-col truncate pr-2">
-                      <span className="font-bold truncate">{ten.name}</span>
-                      <span className="text-[8px] opacity-60 font-mono lowercase tracking-normal">
-                        @{ten.tenantId}
-                      </span>
-                    </div>
-                    {isSelected && <Check size={12} className="text-primary shrink-0 ml-2" />}
-                  </button>
-                );
-              })
             )}
-          </div>
+
+            {/* Contexts (Groups) */}
+            {filteredGroups.length > 0 && (
+              <div className="mt-3 pt-2 border-t border-border/50">
+                <div className="flex items-center gap-1.5 mb-1.5 px-1">
+                  <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground italic">
+                    {t.groupsTitle}
+                  </span>
+                </div>
+                <div className="space-y-1">
+                  {filteredGroups.map((group) => {
+                    const isSelected = group.id === activeContextId;
+                    return (
+                      <button
+                        key={group.id}
+                        type="button"
+                        role="option"
+                        aria-selected={isSelected}
+                        onClick={() => {
+                          if (onContextChange && !isSelected) {
+                            onContextChange(group.id, 'group');
+                          }
+                          setIsOpen(false);
+                        }}
+                        className={cn(
+                          "w-full text-left px-2.5 py-1.5 text-[9px] uppercase font-sans tracking-wide transition-all duration-150 flex items-center justify-between border cursor-pointer rounded-none",
+                          isSelected
+                            ? "bg-primary/10 border-primary/20 text-primary font-bold"
+                            : "bg-card/20 border-transparent hover:bg-muted hover:border-border/50 text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        <div className="flex flex-col truncate pr-2">
+                          <span className="font-bold truncate">{group.name}</span>
+                        </div>
+                        {isSelected && <Check size={10} className="text-primary shrink-0 ml-2" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
         </div>
       )}
     </div>
