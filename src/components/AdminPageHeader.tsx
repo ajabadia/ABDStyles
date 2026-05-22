@@ -16,6 +16,8 @@ export interface AdminPageHeaderProps {
   children?: ReactNode;
   /** Custom className for the root container */
   className?: string;
+  /** Optional tenant identifier to show current context */
+  tenantId?: string;
 }
 
 /**
@@ -30,6 +32,7 @@ export function AdminPageHeader({
   description,
   children,
   className = "",
+  tenantId,
 }: AdminPageHeaderProps) {
   return (
     <header className={`flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-8 ${className}`}>
@@ -39,6 +42,9 @@ export function AdminPageHeader({
           <div className="text-[10px] font-mono font-black uppercase tracking-[0.25em] text-primary flex items-center gap-2 mb-2">
             {Icon && <Icon size={14} className="text-primary animate-pulse" aria-hidden="true" />}
             <span className="animate-console-pulse">{breadcrumb}</span>
+            {tenantId && (
+              <span className="text-muted-foreground ml-1">({tenantId})</span>
+            )}
           </div>
         )}
         

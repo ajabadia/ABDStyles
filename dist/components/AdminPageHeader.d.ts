@@ -14,10 +14,12 @@ export interface AdminPageHeaderProps {
     children?: ReactNode;
     /** Custom className for the root container */
     className?: string;
+    /** Optional tenant identifier to show current context */
+    tenantId?: string;
 }
 /**
  * 🛰️ AdminPageHeader
  * Standardized header component for the administrative dashboards across the ABD Suite.
  */
-export declare function AdminPageHeader({ icon: Icon, breadcrumb, title, backButton, description, children, className, }: AdminPageHeaderProps): import("react/jsx-runtime").JSX.Element;
+export declare function AdminPageHeader({ icon: Icon, breadcrumb, title, backButton, description, children, className, tenantId, }: AdminPageHeaderProps): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=AdminPageHeader.d.ts.map
