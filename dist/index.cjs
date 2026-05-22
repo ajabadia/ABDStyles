@@ -1,9 +1,11 @@
-import { z } from 'zod';
-import { useState, useEffect } from 'react';
-import { X, Menu, Shield, LogOut } from 'lucide-react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import { jsxs, Fragment, jsx } from 'react/jsx-runtime';
+'use strict';
+
+var zod = require('zod');
+var react = require('react');
+var lucideReact = require('lucide-react');
+var clsx = require('clsx');
+var tailwindMerge = require('tailwind-merge');
+var jsxRuntime = require('react/jsx-runtime');
 
 // src/utils/color-utils.ts
 function getContrastColor(hexcolor) {
@@ -77,21 +79,21 @@ function hexToHslComponents(hex) {
   const lPct = Math.round(l * 100);
   return `${hDeg} ${sPct}% ${lPct}%`;
 }
-var hexColorSchema = z.string().regex(/^#[0-9a-fA-F]{6}$/, {
+var hexColorSchema = zod.z.string().regex(/^#[0-9a-fA-F]{6}$/, {
   message: "Must be a valid 6-digit hex color starting with '#' (e.g., '#ef4444')"
 });
-var themeSchema = z.object({
+var themeSchema = zod.z.object({
   primary: hexColorSchema,
   secondary: hexColorSchema.optional(),
   accent: hexColorSchema.optional(),
   background: hexColorSchema.optional(),
-  rounded: z.boolean().optional().default(true),
-  radius: z.string().regex(/^[0-9.]+(rem|px|em|%)$/).optional()
+  rounded: zod.z.boolean().optional().default(true),
+  radius: zod.z.string().regex(/^[0-9.]+(rem|px|em|%)$/).optional()
 });
-var brandingSchema = z.object({
-  logoUrl: z.string().url({ message: "Logo URL must be a valid HTTPS absolute URL" }).regex(/^https:\/\/([a-zA-Z0-9-]+\.)+([a-zA-Z0-9-]+)(\/[a-zA-Z0-9_.-]+)*\.(png|jpg|jpeg|svg|webp)(\?.*)?$/, {
+var brandingSchema = zod.z.object({
+  logoUrl: zod.z.string().url({ message: "Logo URL must be a valid HTTPS absolute URL" }).regex(/^https:\/\/([a-zA-Z0-9-]+\.)+([a-zA-Z0-9-]+)(\/[a-zA-Z0-9_.-]+)*\.(png|jpg|jpeg|svg|webp)(\?.*)?$/, {
     message: "Logo must be a secure image URL (png, jpg, jpeg, svg, webp)"
-  }).optional().or(z.literal("")).or(z.null()),
+  }).optional().or(zod.z.literal("")).or(zod.z.null()),
   theme: themeSchema
 });
 
@@ -176,7 +178,7 @@ function generateTenantCss(config) {
 }`;
 }
 function cn(...inputs) {
-  return twMerge(clsx(inputs));
+  return tailwindMerge.twMerge(clsx.clsx(inputs));
 }
 var defaultTranslations = {
   brandFallback: "ABD SYSTEM",
@@ -197,8 +199,8 @@ function TacticalSidebar({
   homeHref = "/dashboard",
   menuAriaLabel = "Toggle Tactical Menu"
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
+  const [isOpen, setIsOpen] = react.useState(false);
+  react.useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -208,9 +210,9 @@ function TacticalSidebar({
     };
   }, [isOpen]);
   const t = { ...defaultTranslations, ...translations };
-  const Link = LinkComponent || (({ href, children, ...props }) => /* @__PURE__ */ jsx("a", { href, ...props, children }));
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx(
+  const Link = LinkComponent || (({ href, children, ...props }) => /* @__PURE__ */ jsxRuntime.jsx("a", { href, ...props, children }));
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
       "button",
       {
         "aria-label": menuAriaLabel,
@@ -221,10 +223,10 @@ function TacticalSidebar({
           "fixed top-6 left-6 p-3 rounded-none bg-background/80 backdrop-blur-md shadow-lg border border-border hover:border-primary/40 hover:bg-muted transition-all duration-200 cursor-pointer active:scale-95 focus:outline-none focus:ring-1 focus:ring-primary/40",
           isOpen ? "z-[55]" : "z-40"
         ),
-        children: isOpen ? /* @__PURE__ */ jsx(X, { className: "w-5 h-5 text-primary" }) : /* @__PURE__ */ jsx(Menu, { className: "w-5 h-5 text-foreground" })
+        children: isOpen ? /* @__PURE__ */ jsxRuntime.jsx(lucideReact.X, { className: "w-5 h-5 text-primary" }) : /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Menu, { className: "w-5 h-5 text-foreground" })
       }
     ),
-    isOpen && /* @__PURE__ */ jsx(
+    isOpen && /* @__PURE__ */ jsxRuntime.jsx(
       "div",
       {
         "aria-hidden": "true",
@@ -232,7 +234,7 @@ function TacticalSidebar({
         className: "fixed inset-0 z-[45] bg-black/70 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
       }
     ),
-    /* @__PURE__ */ jsxs(
+    /* @__PURE__ */ jsxRuntime.jsxs(
       "aside",
       {
         id: "tactical-sidebar-panel",
@@ -243,39 +245,39 @@ function TacticalSidebar({
           isOpen ? "translate-x-0" : "-translate-x-full"
         ),
         children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex justify-between items-center mb-8 pt-12 border-b border-border pb-4", children: [
-            /* @__PURE__ */ jsxs(
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex justify-between items-center mb-8 pt-12 border-b border-border pb-4", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs(
               Link,
               {
                 href: homeHref,
                 onClick: () => setIsOpen(false),
                 className: "flex items-center gap-3",
                 children: [
-                  logoUrl ? /* @__PURE__ */ jsx(
+                  logoUrl ? /* @__PURE__ */ jsxRuntime.jsx(
                     "img",
                     {
                       src: logoUrl,
                       alt: "Logo",
                       className: "w-6 h-6 object-contain filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]"
                     }
-                  ) : /* @__PURE__ */ jsx("div", { className: "w-6 h-6 bg-primary/10 border border-primary/30 flex items-center justify-center", children: /* @__PURE__ */ jsx(Shield, { size: 12, className: "text-primary" }) }),
-                  /* @__PURE__ */ jsx("span", { className: "font-mono text-xs font-black uppercase tracking-[0.2em] text-foreground", children: user.tenantId || brandName || t.brandFallback })
+                  ) : /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-6 h-6 bg-primary/10 border border-primary/30 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Shield, { size: 12, className: "text-primary" }) }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { className: "font-mono text-xs font-black uppercase tracking-[0.2em] text-foreground", children: user.tenantId || brandName || t.brandFallback })
                 ]
               }
             ),
-            /* @__PURE__ */ jsx(
+            /* @__PURE__ */ jsxRuntime.jsx(
               "button",
               {
                 "aria-label": "Close navigation",
                 onClick: () => setIsOpen(false),
                 className: "p-1.5 hover:bg-muted border border-border rounded-none text-muted-foreground hover:text-foreground transition-colors cursor-pointer",
-                children: /* @__PURE__ */ jsx(X, { className: "w-4 h-4" })
+                children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.X, { className: "w-4 h-4" })
               }
             )
           ] }),
-          /* @__PURE__ */ jsx("nav", { className: "flex-1 flex flex-col gap-2 overflow-y-auto", children: links.map((link) => {
+          /* @__PURE__ */ jsxRuntime.jsx("nav", { className: "flex-1 flex flex-col gap-2 overflow-y-auto", children: links.map((link) => {
             const isActive = activeHref ? activeHref === link.href || link.href !== homeHref && activeHref.startsWith(link.href) : false;
-            return /* @__PURE__ */ jsxs(
+            return /* @__PURE__ */ jsxRuntime.jsxs(
               Link,
               {
                 href: link.href,
@@ -285,46 +287,46 @@ function TacticalSidebar({
                   isActive ? "bg-primary/10 border-primary text-primary" : "bg-muted/10 border-border text-muted-foreground hover:border-primary/20 hover:bg-primary/5 hover:text-primary"
                 ),
                 children: [
-                  /* @__PURE__ */ jsx("span", { className: "shrink-0", children: link.icon }),
-                  /* @__PURE__ */ jsx("span", { className: "flex-1 truncate", children: link.label })
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { className: "shrink-0", children: link.icon }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { className: "flex-1 truncate", children: link.label })
                 ]
               },
               link.href
             );
           }) }),
-          /* @__PURE__ */ jsx("div", { className: "border-t border-border pt-6 mt-auto", children: /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-4 p-4 border border-border bg-muted/10 rounded-none relative overflow-hidden", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
-              /* @__PURE__ */ jsx("div", { className: "w-8 h-8 bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-xs text-primary rounded-none", children: user.name?.charAt(0).toUpperCase() || "U" }),
-              /* @__PURE__ */ jsxs("div", { className: "flex-1 min-w-0", children: [
-                /* @__PURE__ */ jsx("p", { className: "text-xs font-black tracking-wider truncate uppercase text-foreground", children: user.name }),
-                /* @__PURE__ */ jsx("p", { className: "font-mono text-[8px] text-muted-foreground/80 uppercase tracking-widest truncate", children: user.role })
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "border-t border-border pt-6 mt-auto", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col gap-4 p-4 border border-border bg-muted/10 rounded-none relative overflow-hidden", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-xs text-primary rounded-none", children: user.name?.charAt(0).toUpperCase() || "U" }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex-1 min-w-0", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs font-black tracking-wider truncate uppercase text-foreground", children: user.name }),
+                /* @__PURE__ */ jsxRuntime.jsx("p", { className: "font-mono text-[8px] text-muted-foreground/80 uppercase tracking-widest truncate", children: user.role })
               ] })
             ] }),
-            /* @__PURE__ */ jsxs("div", { className: "font-mono text-[8px] text-muted-foreground/60 flex flex-col gap-1 border-t border-border/50 pt-2.5", children: [
-              /* @__PURE__ */ jsxs("div", { className: "flex justify-between", children: [
-                /* @__PURE__ */ jsxs("span", { children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "font-mono text-[8px] text-muted-foreground/60 flex flex-col gap-1 border-t border-border/50 pt-2.5", children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex justify-between", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("span", { children: [
                   t.identityProvider,
                   ":"
                 ] }),
-                /* @__PURE__ */ jsx("span", { className: "text-primary font-bold", children: t.statusOnline })
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-primary font-bold", children: t.statusOnline })
               ] }),
-              user.email && /* @__PURE__ */ jsxs("div", { className: "flex justify-between", children: [
-                /* @__PURE__ */ jsxs("span", { children: [
+              user.email && /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex justify-between", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("span", { children: [
                   t.emailLabel,
                   ":"
                 ] }),
-                /* @__PURE__ */ jsx("span", { className: "truncate max-w-[150px]", children: user.email.toLowerCase() })
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "truncate max-w-[150px]", children: user.email.toLowerCase() })
               ] })
             ] }),
-            /* @__PURE__ */ jsxs(
+            /* @__PURE__ */ jsxRuntime.jsxs(
               "button",
               {
                 "aria-label": t.logoutBtn,
                 onClick: onLogout,
                 className: "w-full flex items-center justify-center gap-2 px-3 py-2 border border-border text-[9px] font-mono font-black uppercase tracking-widest transition-all rounded-none hover:text-red-400 hover:bg-red-500/10 hover:border-red-500/20 cursor-pointer",
                 children: [
-                  /* @__PURE__ */ jsx(LogOut, { size: 12 }),
-                  /* @__PURE__ */ jsx("span", { children: t.logoutBtn })
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.LogOut, { size: 12 }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { children: t.logoutBtn })
                 ]
               }
             )
@@ -346,7 +348,7 @@ function ThemeScript() {
       }
     } catch (e) {}
   `;
-  return /* @__PURE__ */ jsx("script", { dangerouslySetInnerHTML: { __html: code } });
+  return /* @__PURE__ */ jsxRuntime.jsx("script", { dangerouslySetInnerHTML: { __html: code } });
 }
 function Footer({
   className = "",
@@ -358,24 +360,24 @@ function Footer({
 }) {
   const opacityClass = opacity <= 20 ? "text-muted-foreground/20" : opacity >= 40 ? "text-muted-foreground/40" : "text-muted-foreground/30";
   const separatorWidthClass = separatorWidth === "short" ? "w-24 mx-auto" : "w-full";
-  return /* @__PURE__ */ jsxs(
+  return /* @__PURE__ */ jsxRuntime.jsxs(
     "footer",
     {
       className: `mt-auto pt-12 flex flex-col items-center gap-6 font-mono text-[9px] uppercase tracking-[0.3em] ${opacityClass} ${className}`,
       role: "contentinfo",
       children: [
-        showSeparator && /* @__PURE__ */ jsx(
+        showSeparator && /* @__PURE__ */ jsxRuntime.jsx(
           "div",
           {
             className: `h-[1px] bg-border/40 ${separatorWidthClass}`,
             "aria-hidden": "true"
           }
         ),
-        telemetryItems && telemetryItems.length > 0 ? /* @__PURE__ */ jsx("div", { className: "flex flex-wrap justify-center gap-x-12 gap-y-2", children: telemetryItems.map((item, index) => /* @__PURE__ */ jsxs("span", { children: [
+        telemetryItems && telemetryItems.length > 0 ? /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-wrap justify-center gap-x-12 gap-y-2", children: telemetryItems.map((item, index) => /* @__PURE__ */ jsxRuntime.jsxs("span", { children: [
           item.label,
           ": ",
           item.value
-        ] }, index)) }) : label && /* @__PURE__ */ jsx("span", { children: label })
+        ] }, index)) }) : label && /* @__PURE__ */ jsxRuntime.jsx("span", { children: label })
       ]
     }
   );
@@ -390,24 +392,24 @@ function AdminPageHeader({
   className = "",
   tenantId
 }) {
-  return /* @__PURE__ */ jsxs("header", { className: `flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-8 ${className}`, children: [
-    /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-2 min-w-0 flex-1", children: [
-      breadcrumb && /* @__PURE__ */ jsxs("div", { className: "text-[10px] font-mono font-black uppercase tracking-[0.25em] text-primary flex items-center gap-2 mb-2", children: [
-        Icon && /* @__PURE__ */ jsx(Icon, { size: 14, className: "text-primary animate-pulse", "aria-hidden": "true" }),
-        /* @__PURE__ */ jsx("span", { className: "animate-console-pulse", children: breadcrumb }),
-        tenantId && /* @__PURE__ */ jsxs("span", { className: "text-muted-foreground ml-1", children: [
+  return /* @__PURE__ */ jsxRuntime.jsxs("header", { className: `flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-8 ${className}`, children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col gap-2 min-w-0 flex-1", children: [
+      breadcrumb && /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-[10px] font-mono font-black uppercase tracking-[0.25em] text-primary flex items-center gap-2 mb-2", children: [
+        Icon && /* @__PURE__ */ jsxRuntime.jsx(Icon, { size: 14, className: "text-primary animate-pulse", "aria-hidden": "true" }),
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "animate-console-pulse", children: breadcrumb }),
+        tenantId && /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-muted-foreground ml-1", children: [
           "(",
           tenantId,
           ")"
         ] })
       ] }),
-      /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-4 mt-1 min-w-0", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-4 mt-1 min-w-0", children: [
         backButton,
-        /* @__PURE__ */ jsx("h1", { className: "text-3xl font-black uppercase italic tracking-tight text-foreground leading-none flex-1 truncate", children: title })
+        /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-3xl font-black uppercase italic tracking-tight text-foreground leading-none flex-1 truncate", children: title })
       ] }),
-      description && /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground font-sans mt-2 leading-relaxed", children: description })
+      description && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm text-muted-foreground font-sans mt-2 leading-relaxed", children: description })
     ] }),
-    children && /* @__PURE__ */ jsx("div", { className: "flex items-center space-x-2 shrink-0", children })
+    children && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center space-x-2 shrink-0", children })
   ] });
 }
 function HeroHeader({
@@ -417,19 +419,30 @@ function HeroHeader({
   className = "",
   titleClassName = "text-6xl md:text-7xl"
 }) {
-  return /* @__PURE__ */ jsxs("header", { className: `flex flex-col gap-6 items-center text-center ${className}`, role: "banner", children: [
-    statusText && /* @__PURE__ */ jsxs("div", { className: "inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-border text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-mono rounded", children: [
-      /* @__PURE__ */ jsxs("span", { className: "relative flex h-2 w-2", "aria-hidden": "true", children: [
-        /* @__PURE__ */ jsx("span", { className: "animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" }),
-        /* @__PURE__ */ jsx("span", { className: "relative inline-flex rounded-full h-2 w-2 bg-primary" })
+  return /* @__PURE__ */ jsxRuntime.jsxs("header", { className: `flex flex-col gap-6 items-center text-center ${className}`, role: "banner", children: [
+    statusText && /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-border text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-mono rounded", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "relative flex h-2 w-2", "aria-hidden": "true", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" }),
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "relative inline-flex rounded-full h-2 w-2 bg-primary" })
       ] }),
       statusText
     ] }),
-    /* @__PURE__ */ jsx("h1", { className: `${titleClassName} font-black tracking-tighter text-foreground italic uppercase antialiased leading-none`, children: title }),
-    description && /* @__PURE__ */ jsx("p", { className: "text-lg text-muted-foreground max-w-[650px] font-light leading-relaxed mx-auto", children: description })
+    /* @__PURE__ */ jsxRuntime.jsx("h1", { className: `${titleClassName} font-black tracking-tighter text-foreground italic uppercase antialiased leading-none`, children: title }),
+    description && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-muted-foreground max-w-[650px] font-light leading-relaxed mx-auto", children: description })
   ] });
 }
 
-export { AdminPageHeader, Footer, HeroHeader, TacticalSidebar, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
-//# sourceMappingURL=index.js.map
-//# sourceMappingURL=index.js.map
+exports.AdminPageHeader = AdminPageHeader;
+exports.Footer = Footer;
+exports.HeroHeader = HeroHeader;
+exports.TacticalSidebar = TacticalSidebar;
+exports.ThemeScript = ThemeScript;
+exports.adjustColor = adjustColor;
+exports.brandingSchema = brandingSchema;
+exports.generateTenantCss = generateTenantCss;
+exports.getContrastColor = getContrastColor;
+exports.hexColorSchema = hexColorSchema;
+exports.hexToHslComponents = hexToHslComponents;
+exports.themeSchema = themeSchema;
+//# sourceMappingURL=index.cjs.map
+//# sourceMappingURL=index.cjs.map

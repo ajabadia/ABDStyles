@@ -20,7 +20,7 @@ export function ThemeScript() {
     } catch (e) {}
   `;
 
-  return React.createElement('script', {
-    dangerouslySetInnerHTML: { __html: code }
-  });
+  return (
+    <script dangerouslySetInnerHTML={{ __html: code }} />
+  );
 }

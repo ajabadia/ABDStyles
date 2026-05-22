@@ -17,6 +17,7 @@ export function generateTenantCss(config: unknown): string {
   try {
     parsed = themeSchema.parse(config);
   } catch (err) {
+    console.error('[ABDStyles] Invalid theme configuration provided. Falling back to Tech-Noir defaults.', err);
     // If validation fails, fall back to safe industrial defaults (Tech-Noir Cyan)
     parsed = {
       primary: '#06b6d4', // cyan-500

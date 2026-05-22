@@ -6,7 +6,7 @@ export interface FooterProps {
   telemetryItems?: Array<{ label: string; value: string }>;
   showSeparator?: boolean;
   separatorWidth?: 'full' | 'short';
-  opacity?: 'low' | 'normal' | 'high';
+  opacity?: number;
 }
 
 /**
@@ -20,12 +20,12 @@ export function Footer({
   telemetryItems,
   showSeparator = true,
   separatorWidth = 'full',
-  opacity = 'normal'
+  opacity = 30
 }: FooterProps) {
   // Map opacity levels to class strings compatible with standard Tailwind setups
   const opacityClass = 
-    opacity === 'low' ? 'text-muted-foreground/20' : 
-    opacity === 'high' ? 'text-muted-foreground/40' : 
+    opacity <= 20 ? 'text-muted-foreground/20' : 
+    opacity >= 40 ? 'text-muted-foreground/40' : 
     'text-muted-foreground/30';
 
   const separatorWidthClass = separatorWidth === 'short' ? 'w-24 mx-auto' : 'w-full';

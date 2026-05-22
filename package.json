@@ -16,8 +16,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc && powershell -Command \"Copy-Item -Path src/styles -Destination dist -Recurse -Force\"",
+    "build": "tsup && cpx \"src/styles/**/*\" dist/styles",
     "clean": "rm -rf dist",
+    "test": "vitest run",
     "audit": "powershell ./scripts/abd-audit.ps1"
   },
   "keywords": [
@@ -28,9 +29,11 @@
     "tailwind",
     "yiq"
   ],
-  "author": "Antigravity & Google Deepmind Team",
+  "author": "ABD Team",
   "license": "UNLICENSED",
   "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.5",
     "zod": "^3.23.8"
   },
   "peerDependencies": {
@@ -39,11 +42,14 @@
     "next-intl": "^4.12.0"
   },
   "devDependencies": {
-    "typescript": "^5.4.5",
     "@types/node": "^20.12.7",
-    "react": "^19.0.0",
     "@types/react": "^19.0.0",
+    "cpx": "^1.5.0",
     "lucide-react": "^1.16.0",
-    "next-intl": "^4.12.0"
+    "next-intl": "^4.12.0",
+    "react": "^19.0.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.8"
   }
 }

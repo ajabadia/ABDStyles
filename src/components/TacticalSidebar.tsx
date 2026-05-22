@@ -73,13 +73,12 @@ export function TacticalSidebar({
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
     if (isOpen) {
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = originalOverflow;
     };
   }, [isOpen]);
 

@@ -15,9 +15,13 @@
 export function getContrastColor(hexcolor: string): string {
   if (!hexcolor || !hexcolor.startsWith('#')) return '#ffffff';
   try {
-    const r = parseInt(hexcolor.substring(1, 3), 16);
-    const g = parseInt(hexcolor.substring(3, 5), 16);
-    const b = parseInt(hexcolor.substring(5, 7), 16);
+    let cleanHex = hexcolor.replace("#", "");
+    if (cleanHex.length === 3) {
+      cleanHex = cleanHex.split('').map(c => c + c).join('');
+    }
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
     
     // YIQ formula
     const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
@@ -37,9 +41,14 @@ export function getContrastColor(hexcolor: string): string {
  * @returns Shifted hex color string (e.g. "#4d90f7")
  */
 export function adjustColor(hex: string, percent: number): string {
+  if (percent < -100 || percent > 100) return hex;
   if (!hex || !hex.startsWith('#')) return hex;
   try {
-    const num = parseInt(hex.replace("#", ""), 16);
+    let cleanHex = hex.replace("#", "");
+    if (cleanHex.length === 3) {
+      cleanHex = cleanHex.split('').map(c => c + c).join('');
+    }
+    const num = parseInt(cleanHex, 16);
     const amt = Math.round(2.55 * percent);
     const R = (num >> 16) + amt;
     const G = (num >> 8 & 0x00FF) + amt;

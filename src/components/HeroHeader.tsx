@@ -23,7 +23,7 @@ export function HeroHeader({
   title,
   description,
   className = "",
-  titleClassName = "text-6xl md:text-8xl",
+  titleClassName = "text-6xl md:text-7xl",
 }: HeroHeaderProps) {
   return (
     <header className={`flex flex-col gap-6 items-center text-center ${className}`} role="banner">
