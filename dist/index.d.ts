@@ -178,7 +178,7 @@ declare function TacticalSidebar({ user, links, logoUrl, onLogout, brandName, Li
  * Safely loads the user's preferred theme from localStorage prior to full rendering,
  * preventing flash of unstyled content (FOUC).
  */
-declare function ThemeScript(): react_jsx_runtime.JSX.Element;
+declare function ThemeScript(): react_jsx_runtime.JSX.Element | null;
 
 interface FooterProps {
     className?: string;

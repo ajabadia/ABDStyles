@@ -348,6 +348,9 @@ function ThemeScript() {
       }
     } catch (e) {}
   `;
+  if (typeof window !== "undefined") {
+    return null;
+  }
   return /* @__PURE__ */ jsxRuntime.jsx("script", { suppressHydrationWarning: true, dangerouslySetInnerHTML: { __html: code } });
 }
 function Footer({

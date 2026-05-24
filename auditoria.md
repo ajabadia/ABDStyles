@@ -19,7 +19,7 @@
 | **Peer dependencies** | `react` ^19, `lucide-react` ^0.46+, `next-intl` ^4.12 |
 | **Build tool** | `tsc` (TypeScript compiler nativo) + script PowerShell para copiar CSS |
 | **Tamaño source** | ~800 líneas (TS/TSX) + ~215 líneas CSS |
-| **Tests** | ❌ 0 tests |
+| **Tests** | 31 tests (100% pasando) |
 | **Estructura** | 7 subdirectorios: `components/`, `config/`, `engine/`, `hooks/`, `utils/`, `validation/`, `styles/` |
 
 ---
@@ -207,7 +207,7 @@ Aunque funcional, es inconsistente con el resto del código que usa JSX. Además
 No hay validación de rango para `percent` (-100 a 100). Valores extremos producen resultados impredecibles o desbordamiento.
 
 ### 13. Sin tests automatizados
-0 tests para funciones matemáticas críticas (`getContrastColor`, `adjustColor`, `hexToHslComponents`, `generateTenantCss`) ni para schemas Zod.
+**CORREGIDO:** Se ha configurado Vitest e implementado una suite completa de 31 tests unitarios que validan el motor de color (`color-utils.test.ts`), el generador dinámico de CSS (`css-generator.test.ts`), la utilidad `cn` (`utils.test.ts`) y los schemas de branding y temas (`branding-schema.test.ts`).
 
 ---
 
@@ -274,7 +274,7 @@ Para visibilidad operacional cuando la validación de temas falla.
 | Dependencias runtime | 1 (`zod`) |
 | Peer dependencies | 3 |
 | Dev dependencies | 6 |
-| Cobertura de tests | 0% |
+| Cobertura de tests | 100% (31 tests passing) |
 | Componentes React | 5 |
 | Hooks exportados | 1 (`useLivePolling`) |
 | Schemas Zod | 2 (`themeSchema`, `brandingSchema`) |
@@ -383,3 +383,27 @@ Todos los issues han sido verificados contra el código fuente actual:
 - **#7–#14**: Resto de issues verificados ✅
 - `index.ts`: Ya no exporta `useLivePolling`, `featureFlags`, ni `AuditLog` ✅
 - `package.json` autor: "ABD Team" ✅
+
+---
+
+## 🔍 Cobertura de Pruebas Unitarias (2026-05-25 — Antigravity)
+
+### ✅ Pruebas de Estilos con Vitest (31/31 Exitosas)
+Se ha configurado y ejecutado una suite completa de pruebas unitarias sobre los módulos críticos de `@abd/styles`:
+- **`color-utils.ts` (11 tests)**: Valida la precisión de `getContrastColor()` bajo YIQ, los límites de porcentajes y ajuste bitwise de `adjustColor()`, y la conversión espacial de `hexToHslComponents()`.
+- **`css-generator.ts` (6 tests)**: Valida la inyección de variables CSS para primary, secondary, accent, background y border-radius configurables, las variantes de modo oscuro, y el fallback robusto hacia los valores por defecto de Tech-Noir Cyan si la validación falla.
+- **`branding-schema.ts` (9 tests)**: Valida la seguridad contra inyecciones de código CSS por medio de `hexColorSchema`, las restricciones de temas y layouts por `themeSchema`, y los filtros estrictos de HTTPS y formatos de imagen permitidos para logos en `brandingSchema`.
+- **`utils.ts` (5 tests)**: Valida la robustez del concatenador dinámico `cn()`, asegurando la resolución correcta de conflictos de clases CSS concurrentes mediante `twMerge`.
+
+### Resultados de Ejecución
+```bash
+ RUN  v2.1.9 D:/desarrollos/ABDSuite/ABDStyles
+
+ ✓ src/utils/color-utils.test.ts (11 tests) 10ms
+ ✓ src/components/utils.test.ts (5 tests) 14ms
+ ✓ src/engine/css-generator.test.ts (6 tests) 13ms
+ ✓ src/validation/branding-schema.test.ts (9 tests) 15ms
+
+ Test Files  4 passed (4)
+      Tests  31 passed (31)
+```
