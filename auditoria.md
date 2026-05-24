@@ -365,3 +365,21 @@ Sin embargo, sufre de **contaminación arquitectónica**: `useLivePolling`, `fea
 1. **✅ Completado:** Lógica de negocio (polling, features, AuditLog) purgada y transferida.
 2. **✅ Completado:** Utilerías mejoradas con validaciones de límites y soporte Tailwind real (`clsx`, `tailwind-merge`).
 3. **✅ Completado:** Build cross-platform implementado vía `tsup` y vitest configurado con cobertura sobre `color-utils`.
+
+---
+
+## 🔍 Verificación de Correcciones (2026-05-21 — Codebuff)
+
+### ✅ Issues #1–#14 — Verificados como CORRECTAMENTE CORREGIDOS
+
+Todos los issues han sido verificados contra el código fuente actual:
+
+- **#1 `useLivePolling`**: Archivo eliminado (`src/hooks/useLivePolling.ts` ya no existe) ✅
+- **#2 `featureFlags.ts`**: Archivo eliminado (`src/config/featureFlags.ts` ya no existe) ✅
+- **#3 Tipo `AuditLog`**: Ya no se exporta desde `@abd/styles` ✅
+- **#4 `cn()` sin `tailwind-merge`**: Ahora `package.json` incluye `clsx` y `tailwind-merge` como dependencias ✅
+- **#5 Build script**: Migrado a `tsup && cpx` cross-platform ✅
+- **#6 `generateTenantCss` sin logging**: Ahora loguea `console.error` con detalles del fallo de validación ✅
+- **#7–#14**: Resto de issues verificados ✅
+- `index.ts`: Ya no exporta `useLivePolling`, `featureFlags`, ni `AuditLog` ✅
+- `package.json` autor: "ABD Team" ✅

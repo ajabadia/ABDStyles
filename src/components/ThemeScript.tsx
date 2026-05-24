@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 
 /**
@@ -21,6 +19,6 @@ export function ThemeScript() {
   `;
 
   return (
-    <script dangerouslySetInnerHTML={{ __html: code }} />
+    <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: code }} />
   );
 }
