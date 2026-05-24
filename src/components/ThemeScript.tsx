@@ -18,6 +18,11 @@ export function ThemeScript() {
     } catch (e) {}
   `;
 
+  // Only render on the server to prevent React 19 client warning
+  if (typeof window !== 'undefined') {
+    return null;
+  }
+
   return (
     <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: code }} />
   );

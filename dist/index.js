@@ -346,7 +346,7 @@ function ThemeScript() {
       }
     } catch (e) {}
   `;
-  return /* @__PURE__ */ jsx("script", { dangerouslySetInnerHTML: { __html: code } });
+  return /* @__PURE__ */ jsx("script", { suppressHydrationWarning: true, dangerouslySetInnerHTML: { __html: code } });
 }
 function Footer({
   className = "",
