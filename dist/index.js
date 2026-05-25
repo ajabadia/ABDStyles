@@ -337,7 +337,8 @@ function TacticalSidebar({
 function ThemeScript() {
   const code = `
     try {
-      var theme = localStorage.getItem('theme') || 'dark';
+      var match = document.cookie.match(/(?:^|; )abd_theme=([^;]*)/);
+      var theme = (match && match[1]) || localStorage.getItem('theme') || 'dark';
       if (theme === 'system') {
         var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.className = isDark ? 'dark' : 'light';
