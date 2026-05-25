@@ -19,6 +19,7 @@
     "build": "tsup && cpx \"src/styles/**/*\" dist/styles",
     "clean": "rm -rf dist",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "audit": "powershell ./scripts/abd-audit.ps1"
   },
   "keywords": [
@@ -50,6 +51,7 @@
     "react": "^19.0.0",
     "tsup": "^8.3.5",
     "typescript": "^5.4.5",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8"
   }
 }
