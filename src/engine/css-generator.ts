@@ -91,15 +91,15 @@ export function generateTenantCss(config: unknown): string {
 
   return `/* ABDStyles Dynamic Multi-Tenant Injection Gateway */
 :root {
-  --primary: ${primaryHsl} !important;
-  --primary-foreground: ${primaryFgHsl} !important;
-  --ring: ${primaryHsl} !important;
-  --radius: ${radiusValue} !important;${secondaryCss}${accentCss}${bgCss}
+  --primary: hsl(${primaryHsl}) !important;
+  --primary-foreground: hsl(${primaryFgHsl}) !important;
+  --ring: hsl(${primaryHsl}) !important;
+  --radius: ${radiusValue} !important;${secondaryCss ? secondaryCss.replace(/--secondary: (.*?)( !important)/g, '--secondary: hsl($1)$2').replace(/--secondary-foreground: (.*?)( !important)/g, '--secondary-foreground: hsl($1)$2') : ''}${accentCss ? accentCss.replace(/--accent: (.*?)( !important)/g, '--accent: hsl($1)$2').replace(/--accent-foreground: (.*?)( !important)/g, '--accent-foreground: hsl($1)$2') : ''}${bgCss ? bgCss.replace(/--background: (.*?)( !important)/g, '--background: hsl($1)$2').replace(/--foreground: (.*?)( !important)/g, '--foreground: hsl($1)$2') : ''}
 }
 
 .dark {
-  --primary: ${primaryDarkHsl} !important;
-  --primary-foreground: ${primaryDarkFgHsl} !important;
-  --ring: ${primaryDarkHsl} !important;${accentDarkCss}
+  --primary: hsl(${primaryDarkHsl}) !important;
+  --primary-foreground: hsl(${primaryDarkFgHsl}) !important;
+  --ring: hsl(${primaryDarkHsl}) !important;${accentDarkCss ? accentDarkCss.replace(/--accent: (.*?)( !important)/g, '--accent: hsl($1)$2').replace(/--accent-foreground: (.*?)( !important)/g, '--accent-foreground: hsl($1)$2') : ''}
 }`;
 }

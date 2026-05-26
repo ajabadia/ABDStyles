@@ -37,7 +37,7 @@ This single setting instructs both Node and TypeScript that this package consist
 ## 🏛️ Victory 2: Abstracción de Componentes de UI y Conflictos de Dependencias de React 19
 
 ### 1. El Síntoma
-Al añadir componentes interactivos como `SystemSettings.tsx` y `TacticalSidebar.tsx` a la librería `@abd/styles`, surgieron dos problemas:
+Al añadir componentes interactivos como `AdminPageHeader.tsx`, `Footer.tsx`, `HeroHeader.tsx`, `TacticalSidebar.tsx` y `ThemeScript.tsx` a la librería `@abd/styles`, surgieron dos problemas:
 1. El compilador `tsc` fallaba al no saber cómo interpretar las etiquetas JSX (`<button>`, `<aside>`, etc.), arrojando errores de sintaxis TS.
 2. Al ejecutar `npm install` localmente para verificar los tipos de React, la herramienta de administración de paquetes de Node (`npm`) arrojó un error de árbol de dependencias (`ERESOLVE` unable to resolve dependency tree) indicando que `lucide-react@0.46.0` requiere de forma estricta React 16, 17 o 18, colisionando con el nuevo `react@^19.0.0` declarado en la raíz.
 

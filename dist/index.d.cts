@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import * as react_jsx_runtime from 'react/jsx-runtime';
-import * as React from 'react';
 import { ElementType, ReactNode } from 'react';
 
 /**
@@ -53,21 +52,7 @@ declare const themeSchema: z.ZodObject<{
     background: z.ZodOptional<z.ZodString>;
     rounded: z.ZodDefault<z.ZodOptional<z.ZodBoolean>>;
     radius: z.ZodOptional<z.ZodString>;
-}, "strip", z.ZodTypeAny, {
-    primary: string;
-    rounded: boolean;
-    secondary?: string | undefined;
-    accent?: string | undefined;
-    background?: string | undefined;
-    radius?: string | undefined;
-}, {
-    primary: string;
-    secondary?: string | undefined;
-    accent?: string | undefined;
-    background?: string | undefined;
-    rounded?: boolean | undefined;
-    radius?: string | undefined;
-}>;
+}, z.core.$strip>;
 /**
  * Zod validation schema for complete tenant branding models.
  */
@@ -80,42 +65,8 @@ declare const brandingSchema: z.ZodObject<{
         background: z.ZodOptional<z.ZodString>;
         rounded: z.ZodDefault<z.ZodOptional<z.ZodBoolean>>;
         radius: z.ZodOptional<z.ZodString>;
-    }, "strip", z.ZodTypeAny, {
-        primary: string;
-        rounded: boolean;
-        secondary?: string | undefined;
-        accent?: string | undefined;
-        background?: string | undefined;
-        radius?: string | undefined;
-    }, {
-        primary: string;
-        secondary?: string | undefined;
-        accent?: string | undefined;
-        background?: string | undefined;
-        rounded?: boolean | undefined;
-        radius?: string | undefined;
-    }>;
-}, "strip", z.ZodTypeAny, {
-    theme: {
-        primary: string;
-        rounded: boolean;
-        secondary?: string | undefined;
-        accent?: string | undefined;
-        background?: string | undefined;
-        radius?: string | undefined;
-    };
-    logoUrl?: string | null | undefined;
-}, {
-    theme: {
-        primary: string;
-        secondary?: string | undefined;
-        accent?: string | undefined;
-        background?: string | undefined;
-        rounded?: boolean | undefined;
-        radius?: string | undefined;
-    };
-    logoUrl?: string | null | undefined;
-}>;
+    }, z.core.$strip>;
+}, z.core.$strip>;
 type TenantThemeConfig = z.infer<typeof themeSchema>;
 type TenantBrandingConfig = z.infer<typeof brandingSchema>;
 
@@ -131,72 +82,12 @@ type TenantBrandingConfig = z.infer<typeof brandingSchema>;
  */
 declare function generateTenantCss(config: unknown): string;
 
-interface NavUser {
-    name: string;
-    role: string;
-    tenantId: string;
-    email?: string;
-}
-interface SidebarLink {
-    href: string;
-    label: string;
-    icon: React.ReactNode;
-}
-interface LinkComponentProps {
-    href: string;
-    onClick?: () => void;
-    className?: string;
-    children: React.ReactNode;
-}
-interface TacticalSidebarTranslations {
-    brandFallback?: string;
-    logoutBtn?: string;
-    identityProvider?: string;
-    statusOnline?: string;
-    emailLabel?: string;
-}
-interface TacticalSidebarProps {
-    user: NavUser;
-    links: SidebarLink[];
-    logoUrl?: string | null;
-    onLogout: () => void;
-    brandName?: string;
-    /** Component to use for navigation links (e.g. next/link). Falls back to <a>. */
-    LinkComponent?: React.ComponentType<LinkComponentProps>;
-    translations?: TacticalSidebarTranslations;
-    /** Currently active path — used to highlight the active link. */
-    activeHref?: string;
-    /** URL for the logo/brand link at the top of the sidebar. Defaults to "/dashboard". */
-    homeHref?: string;
-    /** Aria-label for the hamburger toggle button. */
-    menuAriaLabel?: string;
-}
-declare function TacticalSidebar({ user, links, logoUrl, onLogout, brandName, LinkComponent, translations, activeHref, homeHref, menuAriaLabel, }: TacticalSidebarProps): react_jsx_runtime.JSX.Element;
-
 /**
  * 🌓 ThemeScript: Centralized client-side theme initialization
  * Safely loads the user's preferred theme from localStorage prior to full rendering,
  * preventing flash of unstyled content (FOUC).
  */
-declare function ThemeScript(): react_jsx_runtime.JSX.Element | null;
-
-interface FooterProps {
-    className?: string;
-    label?: string;
-    telemetryItems?: Array<{
-        label: string;
-        value: string;
-    }>;
-    showSeparator?: boolean;
-    separatorWidth?: 'full' | 'short';
-    opacity?: number;
-}
-/**
- * 🏁 Footer
- * Centralized, style-compliant Tech-Noir footer component.
- * Ensures consistent monospace typeface, case, spacing, and tracking.
- */
-declare function Footer({ className, label, telemetryItems, showSeparator, separatorWidth, opacity }: FooterProps): react_jsx_runtime.JSX.Element;
+declare function ThemeScript(): react_jsx_runtime.JSX.Element;
 
 interface AdminPageHeaderProps {
     /** The icon to display in the breadcrumb / tag area */
@@ -240,4 +131,4 @@ interface HeroHeaderProps {
  */
 declare function HeroHeader({ statusText, title, description, className, titleClassName, }: HeroHeaderProps): react_jsx_runtime.JSX.Element;
 
-export { AdminPageHeader, type AdminPageHeaderProps, Footer, type FooterProps, HeroHeader, type HeroHeaderProps, type LinkComponentProps, type NavUser, type SidebarLink, TacticalSidebar, type TacticalSidebarProps, type TacticalSidebarTranslations, type TenantBrandingConfig, type TenantThemeConfig, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
+export { AdminPageHeader, type AdminPageHeaderProps, HeroHeader, type HeroHeaderProps, type TenantBrandingConfig, type TenantThemeConfig, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };

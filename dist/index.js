@@ -1,9 +1,6 @@
 import { z } from 'zod';
-import { useState, useEffect } from 'react';
-import { X, Menu, Shield, LogOut } from 'lucide-react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import { jsxs, Fragment, jsx } from 'react/jsx-runtime';
+import 'react';
+import { jsx, jsxs } from 'react/jsx-runtime';
 
 // src/utils/color-utils.ts
 function getContrastColor(hexcolor) {
@@ -163,176 +160,17 @@ function generateTenantCss(config) {
   }
   return `/* ABDStyles Dynamic Multi-Tenant Injection Gateway */
 :root {
-  --primary: ${primaryHsl} !important;
-  --primary-foreground: ${primaryFgHsl} !important;
-  --ring: ${primaryHsl} !important;
-  --radius: ${radiusValue} !important;${secondaryCss}${accentCss}${bgCss}
+  --primary: hsl(${primaryHsl}) !important;
+  --primary-foreground: hsl(${primaryFgHsl}) !important;
+  --ring: hsl(${primaryHsl}) !important;
+  --radius: ${radiusValue} !important;${secondaryCss ? secondaryCss.replace(/--secondary: (.*?)( !important)/g, "--secondary: hsl($1)$2").replace(/--secondary-foreground: (.*?)( !important)/g, "--secondary-foreground: hsl($1)$2") : ""}${accentCss ? accentCss.replace(/--accent: (.*?)( !important)/g, "--accent: hsl($1)$2").replace(/--accent-foreground: (.*?)( !important)/g, "--accent-foreground: hsl($1)$2") : ""}${bgCss ? bgCss.replace(/--background: (.*?)( !important)/g, "--background: hsl($1)$2").replace(/--foreground: (.*?)( !important)/g, "--foreground: hsl($1)$2") : ""}
 }
 
 .dark {
-  --primary: ${primaryDarkHsl} !important;
-  --primary-foreground: ${primaryDarkFgHsl} !important;
-  --ring: ${primaryDarkHsl} !important;${accentDarkCss}
+  --primary: hsl(${primaryDarkHsl}) !important;
+  --primary-foreground: hsl(${primaryDarkFgHsl}) !important;
+  --ring: hsl(${primaryDarkHsl}) !important;${accentDarkCss ? accentDarkCss.replace(/--accent: (.*?)( !important)/g, "--accent: hsl($1)$2").replace(/--accent-foreground: (.*?)( !important)/g, "--accent-foreground: hsl($1)$2") : ""}
 }`;
-}
-function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
-var defaultTranslations = {
-  brandFallback: "ABD SYSTEM",
-  logoutBtn: "TERMINAR SESI\xD3N",
-  identityProvider: "IDENTITY PROVIDER",
-  statusOnline: "ONLINE",
-  emailLabel: "EMAIL"
-};
-function TacticalSidebar({
-  user,
-  links,
-  logoUrl,
-  onLogout,
-  brandName,
-  LinkComponent,
-  translations,
-  activeHref,
-  homeHref = "/dashboard",
-  menuAriaLabel = "Toggle Tactical Menu"
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, [isOpen]);
-  const t = { ...defaultTranslations, ...translations };
-  const Link = LinkComponent || (({ href, children, ...props }) => /* @__PURE__ */ jsx("a", { href, ...props, children }));
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx(
-      "button",
-      {
-        "aria-label": menuAriaLabel,
-        "aria-expanded": isOpen,
-        "aria-controls": "tactical-sidebar-panel",
-        onClick: () => setIsOpen(!isOpen),
-        className: cn(
-          "fixed top-6 left-6 p-3 rounded-none bg-background/80 backdrop-blur-md shadow-lg border border-border hover:border-primary/40 hover:bg-muted transition-all duration-200 cursor-pointer active:scale-95 focus:outline-none focus:ring-1 focus:ring-primary/40",
-          isOpen ? "z-[55]" : "z-40"
-        ),
-        children: isOpen ? /* @__PURE__ */ jsx(X, { className: "w-5 h-5 text-primary" }) : /* @__PURE__ */ jsx(Menu, { className: "w-5 h-5 text-foreground" })
-      }
-    ),
-    isOpen && /* @__PURE__ */ jsx(
-      "div",
-      {
-        "aria-hidden": "true",
-        onClick: () => setIsOpen(false),
-        className: "fixed inset-0 z-[45] bg-black/70 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
-      }
-    ),
-    /* @__PURE__ */ jsxs(
-      "aside",
-      {
-        id: "tactical-sidebar-panel",
-        role: "navigation",
-        "aria-label": "Tactical Navigation",
-        className: cn(
-          "fixed inset-y-0 left-0 z-50 w-80 bg-background border-r border-border shadow-2xl flex flex-col p-6 transition-transform duration-300 ease-in-out transform rounded-none",
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        ),
-        children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex justify-between items-center mb-8 pt-12 border-b border-border pb-4", children: [
-            /* @__PURE__ */ jsxs(
-              Link,
-              {
-                href: homeHref,
-                onClick: () => setIsOpen(false),
-                className: "flex items-center gap-3",
-                children: [
-                  logoUrl ? /* @__PURE__ */ jsx(
-                    "img",
-                    {
-                      src: logoUrl,
-                      alt: "Logo",
-                      className: "w-6 h-6 object-contain filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]"
-                    }
-                  ) : /* @__PURE__ */ jsx("div", { className: "w-6 h-6 bg-primary/10 border border-primary/30 flex items-center justify-center", children: /* @__PURE__ */ jsx(Shield, { size: 12, className: "text-primary" }) }),
-                  /* @__PURE__ */ jsx("span", { className: "font-mono text-xs font-black uppercase tracking-[0.2em] text-foreground", children: user.tenantId || brandName || t.brandFallback })
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "button",
-              {
-                "aria-label": "Close navigation",
-                onClick: () => setIsOpen(false),
-                className: "p-1.5 hover:bg-muted border border-border rounded-none text-muted-foreground hover:text-foreground transition-colors cursor-pointer",
-                children: /* @__PURE__ */ jsx(X, { className: "w-4 h-4" })
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsx("nav", { className: "flex-1 flex flex-col gap-2 overflow-y-auto", children: links.map((link) => {
-            const isActive = activeHref ? activeHref === link.href || link.href !== homeHref && activeHref.startsWith(link.href) : false;
-            return /* @__PURE__ */ jsxs(
-              Link,
-              {
-                href: link.href,
-                onClick: () => setIsOpen(false),
-                className: cn(
-                  "px-4 py-3 rounded-none flex items-center gap-4 font-mono text-[10px] font-bold uppercase tracking-wider transition-all duration-200 border",
-                  isActive ? "bg-primary/10 border-primary text-primary" : "bg-muted/10 border-border text-muted-foreground hover:border-primary/20 hover:bg-primary/5 hover:text-primary"
-                ),
-                children: [
-                  /* @__PURE__ */ jsx("span", { className: "shrink-0", children: link.icon }),
-                  /* @__PURE__ */ jsx("span", { className: "flex-1 truncate", children: link.label })
-                ]
-              },
-              link.href
-            );
-          }) }),
-          /* @__PURE__ */ jsx("div", { className: "border-t border-border pt-6 mt-auto", children: /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-4 p-4 border border-border bg-muted/10 rounded-none relative overflow-hidden", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
-              /* @__PURE__ */ jsx("div", { className: "w-8 h-8 bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-xs text-primary rounded-none", children: user.name?.charAt(0).toUpperCase() || "U" }),
-              /* @__PURE__ */ jsxs("div", { className: "flex-1 min-w-0", children: [
-                /* @__PURE__ */ jsx("p", { className: "text-xs font-black tracking-wider truncate uppercase text-foreground", children: user.name }),
-                /* @__PURE__ */ jsx("p", { className: "font-mono text-[8px] text-muted-foreground/80 uppercase tracking-widest truncate", children: user.role })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxs("div", { className: "font-mono text-[8px] text-muted-foreground/60 flex flex-col gap-1 border-t border-border/50 pt-2.5", children: [
-              /* @__PURE__ */ jsxs("div", { className: "flex justify-between", children: [
-                /* @__PURE__ */ jsxs("span", { children: [
-                  t.identityProvider,
-                  ":"
-                ] }),
-                /* @__PURE__ */ jsx("span", { className: "text-primary font-bold", children: t.statusOnline })
-              ] }),
-              user.email && /* @__PURE__ */ jsxs("div", { className: "flex justify-between", children: [
-                /* @__PURE__ */ jsxs("span", { children: [
-                  t.emailLabel,
-                  ":"
-                ] }),
-                /* @__PURE__ */ jsx("span", { className: "truncate max-w-[150px]", children: user.email.toLowerCase() })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxs(
-              "button",
-              {
-                "aria-label": t.logoutBtn,
-                onClick: onLogout,
-                className: "w-full flex items-center justify-center gap-2 px-3 py-2 border border-border text-[9px] font-mono font-black uppercase tracking-widest transition-all rounded-none hover:text-red-400 hover:bg-red-500/10 hover:border-red-500/20 cursor-pointer",
-                children: [
-                  /* @__PURE__ */ jsx(LogOut, { size: 12 }),
-                  /* @__PURE__ */ jsx("span", { children: t.logoutBtn })
-                ]
-              }
-            )
-          ] }) })
-        ]
-      }
-    )
-  ] });
 }
 function ThemeScript() {
   const code = `
@@ -347,42 +185,7 @@ function ThemeScript() {
       }
     } catch (e) {}
   `;
-  if (typeof window !== "undefined") {
-    return null;
-  }
   return /* @__PURE__ */ jsx("script", { suppressHydrationWarning: true, dangerouslySetInnerHTML: { __html: code } });
-}
-function Footer({
-  className = "",
-  label,
-  telemetryItems,
-  showSeparator = true,
-  separatorWidth = "full",
-  opacity = 30
-}) {
-  const opacityClass = opacity <= 20 ? "text-muted-foreground/20" : opacity >= 40 ? "text-muted-foreground/40" : "text-muted-foreground/30";
-  const separatorWidthClass = separatorWidth === "short" ? "w-24 mx-auto" : "w-full";
-  return /* @__PURE__ */ jsxs(
-    "footer",
-    {
-      className: `mt-auto pt-12 flex flex-col items-center gap-6 font-mono text-[9px] uppercase tracking-[0.3em] ${opacityClass} ${className}`,
-      role: "contentinfo",
-      children: [
-        showSeparator && /* @__PURE__ */ jsx(
-          "div",
-          {
-            className: `h-[1px] bg-border/40 ${separatorWidthClass}`,
-            "aria-hidden": "true"
-          }
-        ),
-        telemetryItems && telemetryItems.length > 0 ? /* @__PURE__ */ jsx("div", { className: "flex flex-wrap justify-center gap-x-12 gap-y-2", children: telemetryItems.map((item, index) => /* @__PURE__ */ jsxs("span", { children: [
-          item.label,
-          ": ",
-          item.value
-        ] }, index)) }) : label && /* @__PURE__ */ jsx("span", { children: label })
-      ]
-    }
-  );
 }
 function AdminPageHeader({
   icon: Icon,
@@ -405,10 +208,7 @@ function AdminPageHeader({
           ")"
         ] })
       ] }),
-      /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-4 mt-1 min-w-0", children: [
-        backButton,
-        /* @__PURE__ */ jsx("h1", { className: "text-3xl font-black uppercase italic tracking-tight text-foreground leading-none flex-1 truncate", children: title })
-      ] }),
+      /* @__PURE__ */ jsx("div", { className: "flex items-center gap-4 mt-1 min-w-0", children: /* @__PURE__ */ jsx("h1", { className: "text-3xl font-black uppercase italic tracking-tight text-foreground leading-none flex-1 truncate", children: title }) }),
       description && /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground font-sans mt-2 leading-relaxed", children: description })
     ] }),
     children && /* @__PURE__ */ jsx("div", { className: "flex items-center space-x-2 shrink-0", children })
@@ -434,6 +234,6 @@ function HeroHeader({
   ] });
 }
 
-export { AdminPageHeader, Footer, HeroHeader, TacticalSidebar, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
+export { AdminPageHeader, HeroHeader, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

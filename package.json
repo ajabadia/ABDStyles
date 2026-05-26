@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup && cpx \"src/styles/**/*\" dist/styles",
+    "build": "tsup && cpy \"src/styles/**/*\" dist/styles",
     "clean": "rm -rf dist",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -34,8 +34,8 @@
   "license": "UNLICENSED",
   "dependencies": {
     "clsx": "^2.1.1",
-    "tailwind-merge": "^2.5.5",
-    "zod": "^3.23.8"
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.4.3"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -45,7 +45,7 @@
   "devDependencies": {
     "@types/node": "^20.12.7",
     "@types/react": "^19.0.0",
-    "cpx": "^1.5.0",
+    "cpy-cli": "^5.0.0",
     "lucide-react": "^1.16.0",
     "next-intl": "^4.12.0",
     "react": "^19.0.0",

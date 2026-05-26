@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { cn } from './utils';
+import { cn } from './utils.js';
 
 describe('components/utils.ts (cn)', () => {
   it('should join plain class name strings together', () => {

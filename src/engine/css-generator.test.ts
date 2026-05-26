@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { generateTenantCss } from './css-generator';
+import { generateTenantCss } from './css-generator.js';
 
 describe('generateTenantCss', () => {
   it('should fall back to Tech-Noir Cyan defaults if parsing fails or invalid input is provided', () => {

@@ -6,7 +6,7 @@ Utilizes **TypeScript**, **Zod**, and **Tailwind CSS v4** to render highly custo
 
 Now also serves as the single provider for:
 *   **Unified Stylesheet**: Consolidated visual parameters and console utility classes (`dist/styles/industrial-core.css`).
-*   **Agnostic UI Components**: Reusable, framework-agnostic React components (`SystemSettings`, `TacticalSidebar`) that eliminate interface divergence across applications.
+*   **Agnostic UI Components**: Reusable, framework-agnostic React components (`AdminPageHeader`, `Footer`, `HeroHeader`, `TacticalSidebar`, `ThemeScript`) that eliminate interface divergence across applications.
 
 ---
 

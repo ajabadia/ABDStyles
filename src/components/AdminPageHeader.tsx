@@ -50,7 +50,6 @@ export function AdminPageHeader({
         
         {/* Title Row with optional Back Button */}
         <div className="flex items-center gap-4 mt-1 min-w-0">
-          {backButton}
           <h1 className="text-3xl font-black uppercase italic tracking-tight text-foreground leading-none flex-1 truncate">
             {title}
           </h1>

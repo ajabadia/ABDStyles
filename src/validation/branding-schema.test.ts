@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { hexColorSchema, themeSchema, brandingSchema } from './branding-schema';
+import { hexColorSchema, themeSchema, brandingSchema } from './branding-schema.js';
 
 describe('branding-schema.ts', () => {
   describe('hexColorSchema', () => {

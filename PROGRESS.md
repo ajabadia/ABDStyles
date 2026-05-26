@@ -37,6 +37,6 @@
 - [x] Configure JSX compilation option (`react-jsx`) inside `tsconfig.json`.
 - [x] Update the architectural quality audit guard (`arch-guard.mjs`) to scan and validate `.tsx` files.
 - [x] Create core stylesheet `industrial-core.css` containing baseline variables and console utility classes.
-- [x] Implement reusable, framework-agnostic React components (`SystemSettings` and `TacticalSidebar`) without proprietary imports.
+- [x] Implement reusable, framework-agnostic React components (`AdminPageHeader`, `Footer`, `HeroHeader`, `TacticalSidebar`, `ThemeScript`) without proprietary imports.
 - [x] Export the new components from the main package index.
 - [x] Run the quality audit pipeline (`npm run audit`) and verify system compliance.
