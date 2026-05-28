@@ -1,4 +1,4 @@
-# Product Roadmap — `@abd/styles`
+# Product Roadmap — `@ajabadia/styles`
 
 Roadmap detailing the completed visual engineering achievements and the upcoming integration sprints for the unified styling system library.
 
@@ -27,7 +27,7 @@ Roadmap detailing the completed visual engineering achievements and the upcoming
 ## 🗺️ Upcoming Sprints
 
 ### Sprint 2: Satelite Integration (ABDQuiz & ABDAuth)
-- **Objective**: Connect the first core platforms in the ecosystem to `@abd/styles`.
+- **Objective**: Connect the first core platforms in the ecosystem to `@ajabadia/styles`.
 - **Tasks**:
   - [ ] Add the Git dependency reference in `ABDQuiz`'s `package.json`.
   - [ ] Refactor `ABDQuiz/src/app/[locale]/layout.tsx` to read the tenant session and call `generateTenantCss` server-side (SSR).

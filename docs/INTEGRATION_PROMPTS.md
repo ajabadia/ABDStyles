@@ -1,24 +1,24 @@
 # Prompts & Integration Guide for Sibling Applications
 
-This guide provides **ready-to-use, copy-pasteable prompts** designed to instruct other AI coding agents (or developers) to seamlessly integrate the `@abd/styles` central engine into any sibling application inside the ABD SaaS suite.
+This guide provides **ready-to-use, copy-pasteable prompts** designed to instruct other AI coding agents (or developers) to seamlessly integrate the `@ajabadia/styles` central engine into any sibling application inside the ABD SaaS suite.
 
 ---
 
 ## 🛰️ Prompt 1: Satelite UI Theme & Components Integration (e.g. for `ABDQuiz`, `ABDAuth`, `ABDtenantGobernance`, etc.)
 
-Copy and paste this prompt when instructing an agent working on a satellite application to connect its layout and visual chassis to the central `@abd/styles` library:
+Copy and paste this prompt when instructing an agent working on a satellite application to connect its layout and visual chassis to the central `@ajabadia/styles` library:
 
 ```markdown
-# ESPECIFICACIÓN: Integración del Chasis Visual y Componentes Compartidos (@abd/styles)
+# ESPECIFICACIÓN: Integración del Chasis Visual y Componentes Compartidos (@ajabadia/styles)
 
-Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styles` en esta aplicación para unificar la hoja de estilos global, eliminar la duplicación de código en la navegación y permitir que la interfaz mute según el Tenant activo en tiempo real. Esto incluye la inyección de componentes troncales como `TenantSelector`, `UserIdentity`, `CommandPalette`, `Footer`, `AdminPageHeader` y `HeroHeader`.
+Estamos integrando el sistema central de marca blanca y chasis visual `@ajabadia/styles` en esta aplicación para unificar la hoja de estilos global, eliminar la duplicación de código en la navegación y permitir que la interfaz mute según el Tenant activo en tiempo real. Esto incluye la inyección de componentes troncales como `TenantSelector`, `UserIdentity`, `CommandPalette`, `Footer`, `AdminPageHeader` y `HeroHeader`.
 
 ## REQUERIMIENTOS TÉCNICOS:
 
 1. **Instalación de Dependencia**:
    - Agrega la dependencia central de GitHub en el `package.json` de este proyecto:
      ```json
-     "@abd/styles": "git+https://github.com/ajabadia/ABDStyles.git#main"
+     "@ajabadia/styles": "git+https://github.com/ajabadia/ABDStyles.git#main"
      ```
    - Ejecuta `npm install --legacy-peer-deps` (para evitar conflictos de pares de React 19 con Lucide Icons).
 
@@ -27,7 +27,7 @@ Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styl
    - Importa la hoja de estilos centralizada directamente. Si utilizas Next.js 16 con Turbopack, la resolución de subpaths puede fallar, por lo que es preferible utilizar la ruta relativa directa a `node_modules`:
      ```css
      @import "tailwindcss";
-     @import "../../node_modules/@abd/styles/dist/styles/industrial-core.css";
+     @import "../../node_modules/@ajabadia/styles/dist/styles/industrial-core.css";
      ```
    - **Mapeo Obligatorio para Tailwind v4**: Declara las variables de mapeo en el bloque `@theme inline` para asociar las propiedades HSL del core con las utilidades de color estándar de Tailwind:
      ```css
@@ -62,7 +62,7 @@ Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styl
 3. **Inyección en Servidor (SSR) en el Layout Raíz**:
    - En `src/app/[locale]/layout.tsx` (o tu layout raíz), importa la función generadora:
      ```typescript
-     import { generateTenantCss } from '@abd/styles';
+     import { generateTenantCss } from '@ajabadia/styles';
      ```
    - Recupera los datos de branding del Tenant activo (ya sea de la base de datos de configuración por subdominio o desde la sesión de usuario federada).
    - Ejecuta `generateTenantCss(tenant.branding.theme)` en el servidor (en memoria) para obtener el bloque CSS optimizado.
@@ -77,7 +77,7 @@ Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styl
 
 4. **Consumo de Componentes React Reutilizables (Patrón Client Wrapper)**:
    - Dado que los componentes de navegación dependen de callbacks de enrutamiento y hooks del lado del cliente (`useTheme`, `useLocale`, `useSession`), no deben instanciarse directamente dentro de Server Components (como el layout raíz).
-   - **Mejor Práctica**: Mantén un wrapper cliente local (`"use client"`) en tu proyecto satélite (ej. `src/components/ui/TenantSelector.tsx` y `src/components/layout/UserIdentity.tsx`) que envuelva a los componentes importados de `@abd/styles` e inyecte los hooks locales de forma segura:
+   - **Mejor Práctica**: Mantén un wrapper cliente local (`"use client"`) en tu proyecto satélite (ej. `src/components/ui/TenantSelector.tsx` y `src/components/layout/UserIdentity.tsx`) que envuelva a los componentes importados de `@ajabadia/styles` e inyecte los hooks locales de forma segura:
      ```typescript
      // src/components/layout/UserIdentity.tsx
      "use client";
@@ -86,7 +86,7 @@ Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styl
      import { useLocale, useTranslations } from "next-intl";
      import { usePathname, useRouter } from "@/i18n/routing";
      import { useSession, signOut } from "next-auth/react";
-     import { UserIdentity as SharedUserIdentity } from '@abd/styles';
+     import { UserIdentity as SharedUserIdentity } from '@ajabadia/styles';
      import Link from "next/link"; // O el LocalizedLink
 
      export function UserIdentity() {
@@ -117,11 +117,11 @@ Estamos integrando el sistema central de marca blanca y chasis visual `@abd/styl
      De este modo, tu layout de servidor puede instanciar el componente local wrapper de manera limpia sin romper los flujos de renderizado. Otros componentes compartidos disponibles incluyen `TenantSelector`, `Footer`, `CommandPalette` y `TacticalSidebar`.
 
 5. **Centralización de Cabeceras (Headers)**:
-   - Para las **landing pages** (portadas públicas o de inicio), utiliza el componente `HeroHeader` de `@abd/styles`. Éste acepta `statusText` (ej: "SYSTEM ACTIVE"), `title` (el título principal gigante, soporta `ReactNode`) y `description`.
+   - Para las **landing pages** (portadas públicas o de inicio), utiliza el componente `HeroHeader` de `@ajabadia/styles`. Éste acepta `statusText` (ej: "SYSTEM ACTIVE"), `title` (el título principal gigante, soporta `ReactNode`) y `description`.
    - Para las **consolas de administración** (rutas `/admin/*`), utiliza el componente `AdminPageHeader`. Éste acepta `icon` (ícono de `lucide-react`), `breadcrumb`, `title`, `description`, `backButton` (nodo opcional para el botón de retroceso) y `children` (para inyectar acciones o botones extra a la derecha).
    - Ejemplo de uso en admin:
      ```tsx
-     import { AdminPageHeader } from '@abd/styles';
+     import { AdminPageHeader } from '@ajabadia/styles';
      import { FolderOpen, ArrowLeft } from 'lucide-react';
      
      <AdminPageHeader
@@ -156,7 +156,7 @@ Estamos construyendo un panel administrativo dentro del portal de gobernanza par
 ## REQUERIMIENTOS TÉCNICOS:
 
 1. **Esquema de Base de Datos (MongoDB)**:
-   - Modifica o extiende el modelo de datos de `Tenant` para incorporar el objeto `branding` estructurado de acuerdo con `@abd/styles`:
+   - Modifica o extiende el modelo de datos de `Tenant` para incorporar el objeto `branding` estructurado de acuerdo con `@ajabadia/styles`:
      ```typescript
      branding: {
        logoUrl: string; // URL CDN de la imagen
@@ -171,7 +171,7 @@ Estamos construyendo un panel administrativo dentro del portal de gobernanza par
      ```
 
 2. **Sanitización Estricta mediante Zod**:
-   - Instala e importa `@abd/styles` para reutilizar su esquema de validación `brandingSchema` en el backend antes de persistir cualquier cambio en la base de datos, evitando inyecciones de CSS maliciosas.
+   - Instala e importa `@ajabadia/styles` para reutilizar su esquema de validación `brandingSchema` en el backend antes de persistir cualquier cambio en la base de datos, evitando inyecciones de CSS maliciosas.
 
 3. **UI del Formulario de Marca (`TenantBrandingForm.tsx`)**:
    - Diseña un panel de control premium (estética Tech-Noir minimalista, bordes industriales, fondos glassmorphism).

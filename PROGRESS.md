@@ -1,4 +1,4 @@
-# State Manifest: Progress Log — `@abd/styles`
+# State Manifest: Progress Log — `@ajabadia/styles`
 
 *   **Current Status**: `SYS_CERTIFIED` ✅
 *   **Compliance Standard**: `Era 11 Compliant` (0 errors, 2 warnings)

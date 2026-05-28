@@ -1,4 +1,4 @@
-# 🔍 Auditoría Técnica Integral — `@abd/styles` v1.0.0
+# 🔍 Auditoría Técnica Integral — `@ajabadia/styles` v1.0.0
 
 **Fecha:** 2026-05-21
 **Alcance:** Código fuente, documentación, configuración de build, seguridad y arquitectura
@@ -12,7 +12,7 @@
 
 | Propiedad | Valor |
 |---|---|
-| **Nombre** | `@abd/styles` |
+| **Nombre** | `@ajabadia/styles` |
 | **Versión** | 1.0.0 |
 | **Rol** | Design System centralizado — tokens HSL, utilidades de color, validación Zod, componentes presentacionales puros, hoja de estilos unificada |
 | **Dependencia runtime** | `zod` ^3.23.8 (única) |
@@ -92,11 +92,11 @@ Este hook:
 - Implementa polling con `setInterval`
 - Maneja `newLogIds` con timeouts para animaciones
 
-**Esto viola el principio fundacional de `@abd/styles` como "SOLO componentes presentacionales".** El hook acopla el design system a la API de auditoría del ecosistema, impidiendo que `@abd/styles` sea un design system puro e independiente.
+**Esto viola el principio fundacional de `@ajabadia/styles` como "SOLO componentes presentacionales".** El hook acopla el design system a la API de auditoría del ecosistema, impidiendo que `@ajabadia/styles` sea un design system puro e independiente.
 
-**Impacto:** `ABDEcosystemWidgets` ya depende de `useLivePolling` desde `@abd/styles`, perpetuando este acoplamiento incorrecto.
+**Impacto:** `ABDEcosystemWidgets` ya depende de `useLivePolling` desde `@ajabadia/styles`, perpetuando este acoplamiento incorrecto.
 
-**Recomendación:** Mover `useLivePolling` + tipo `AuditLog` a `@abd/ecosystem-widgets/src/hooks/useLivePolling.ts`. Eliminar la exportación desde `@abd/styles`.
+**Recomendación:** Mover `useLivePolling` + tipo `AuditLog` a `@ajabadia/ecosystem-widgets/src/hooks/useLivePolling.ts`. Eliminar la exportación desde `@ajabadia/styles`.
 
 ### 2. `featureFlags.ts` — configuración de aplicación en el Design System
 **Archivo:** `src/config/featureFlags.ts`
@@ -108,12 +108,12 @@ export const featureFlags = {
 
 Un design system no debería contener feature flags de aplicación. `liveModeEnabled` es una decisión de producto/deploy, no de diseño.
 
-**Recomendación:** Mover a `@abd/ecosystem-widgets` o a variables de entorno de cada satélite.
+**Recomendación:** Mover a `@ajabadia/ecosystem-widgets` o a variables de entorno de cada satélite.
 
 ### 3. `AuditLog` — tipo de dominio definido en el Design System
 **Archivo:** `src/hooks/useLivePolling.ts:12-23`
 
-La interfaz `AuditLog` (con campos como `appId`, `entityId`, `userEmail`, `changedFields`, `previousState`) es un modelo de datos del dominio de auditoría. Su lugar correcto es `@abd/ecosystem-widgets` o un futuro `@abd/types`.
+La interfaz `AuditLog` (con campos como `appId`, `entityId`, `userEmail`, `changedFields`, `previousState`) es un modelo de datos del dominio de auditoría. Su lugar correcto es `@ajabadia/ecosystem-widgets` o un futuro `@abd/types`.
 
 ### 4. `cn()` primitivo sin `tailwind-merge`
 **Archivo:** `src/components/utils.ts`
@@ -243,13 +243,13 @@ A diferencia de `TacticalSidebar` y `AdminPageHeader`, `Footer` no acepta `LinkC
 ## 🛠️ Mejoras Arquitectónicas Recomendadas
 
 ### A. Crear `@abd/types` para modelos de dominio compartidos
-Extraer `AuditLog`, tipos de branding (`TenantThemeConfig`, `TenantBrandingConfig`), y potencialmente `UserProfile`/`TenantInfo` de `@abd/satellite-sdk` a un paquete de tipos compartido.
+Extraer `AuditLog`, tipos de branding (`TenantThemeConfig`, `TenantBrandingConfig`), y potencialmente `UserProfile`/`TenantInfo` de `@ajabadia/satellite-sdk` a un paquete de tipos compartido.
 
-### B. Migrar `useLivePolling` + `featureFlags` → `@abd/ecosystem-widgets`
-Eliminar `src/hooks/` y `src/config/` de `@abd/styles`. Estos son preocupaciones de aplicación/widget, no de design system.
+### B. Migrar `useLivePolling` + `featureFlags` → `@ajabadia/ecosystem-widgets`
+Eliminar `src/hooks/` y `src/config/` de `@ajabadia/styles`. Estos son preocupaciones de aplicación/widget, no de design system.
 
 ### C. Mejorar `cn()` con `clsx` + `tailwind-merge`
-Unificar la utilidad `cn()` en `@abd/styles` con la implementación de `ABDEcosystemWidgets`. Idealmente, que `ABDEcosystemWidgets` re-exporte `cn()` desde `@abd/styles`.
+Unificar la utilidad `cn()` en `@ajabadia/styles` con la implementación de `ABDEcosystemWidgets`. Idealmente, que `ABDEcosystemWidgets` re-exporte `cn()` desde `@ajabadia/styles`.
 
 ### D. Migrar build a `tsup`
 `tsup` (usado por `ABDSatelliteSDK`) genera ESM+CJS+DTS automáticamente y es cross-platform. Eliminaría el script PowerShell.
@@ -357,9 +357,9 @@ Para visibilidad operacional cuando la validación de temas falla.
 
 ## 🏁 Conclusión
 
-`@abd/styles` es el paquete **mejor diseñado y más maduro** del ecosistema ABD. Su motor de color matemático, validación Zod anti-inyección, documentación exhaustiva, y componentes framework-agnostic son ejemplares. La certificación ERA 11 con 0 errores lo confirma.
+`@ajabadia/styles` es el paquete **mejor diseñado y más maduro** del ecosistema ABD. Su motor de color matemático, validación Zod anti-inyección, documentación exhaustiva, y componentes framework-agnostic son ejemplares. La certificación ERA 11 con 0 errores lo confirma.
 
-Sin embargo, sufre de **contaminación arquitectónica**: `useLivePolling`, `featureFlags` y el tipo `AuditLog` son preocupaciones de aplicación/widget que no pertenecen a un design system. Esto genera un acoplamiento incorrecto donde `ABDEcosystemWidgets` depende de `@abd/styles` para lógica de negocio.
+Sin embargo, sufre de **contaminación arquitectónica**: `useLivePolling`, `featureFlags` y el tipo `AuditLog` son preocupaciones de aplicación/widget que no pertenecen a un design system. Esto genera un acoplamiento incorrecto donde `ABDEcosystemWidgets` depende de `@ajabadia/styles` para lógica de negocio.
 
 **Estado actual de la remediación:**
 1. **✅ Completado:** Lógica de negocio (polling, features, AuditLog) purgada y transferida.
@@ -376,7 +376,7 @@ Todos los issues han sido verificados contra el código fuente actual:
 
 - **#1 `useLivePolling`**: Archivo eliminado (`src/hooks/useLivePolling.ts` ya no existe) ✅
 - **#2 `featureFlags.ts`**: Archivo eliminado (`src/config/featureFlags.ts` ya no existe) ✅
-- **#3 Tipo `AuditLog`**: Ya no se exporta desde `@abd/styles` ✅
+- **#3 Tipo `AuditLog`**: Ya no se exporta desde `@ajabadia/styles` ✅
 - **#4 `cn()` sin `tailwind-merge`**: Ahora `package.json` incluye `clsx` y `tailwind-merge` como dependencias ✅
 - **#5 Build script**: Migrado a `tsup && cpx` cross-platform ✅
 - **#6 `generateTenantCss` sin logging**: Ahora loguea `console.error` con detalles del fallo de validación ✅
@@ -389,7 +389,7 @@ Todos los issues han sido verificados contra el código fuente actual:
 ## 🔍 Cobertura de Pruebas Unitarias (2026-05-25 — Antigravity)
 
 ### ✅ Pruebas de Estilos con Vitest (31/31 Exitosas)
-Se ha configurado y ejecutado una suite completa de pruebas unitarias sobre los módulos críticos de `@abd/styles`:
+Se ha configurado y ejecutado una suite completa de pruebas unitarias sobre los módulos críticos de `@ajabadia/styles`:
 - **`color-utils.ts` (11 tests)**: Valida la precisión de `getContrastColor()` bajo YIQ, los límites de porcentajes y ajuste bitwise de `adjustColor()`, y la conversión espacial de `hexToHslComponents()`.
 - **`css-generator.ts` (6 tests)**: Valida la inyección de variables CSS para primary, secondary, accent, background y border-radius configurables, las variantes de modo oscuro, y el fallback robusto hacia los valores por defecto de Tech-Noir Cyan si la validación falla.
 - **`branding-schema.ts` (9 tests)**: Valida la seguridad contra inyecciones de código CSS por medio de `hexColorSchema`, las restricciones de temas y layouts por `themeSchema`, y los filtros estrictos de HTTPS y formatos de imagen permitidos para logos en `brandingSchema`.

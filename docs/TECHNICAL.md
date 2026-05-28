@@ -1,12 +1,12 @@
-# Technical Architecture Guide - `@abd/styles`
+# Technical Architecture Guide - `@ajabadia/styles`
 
-This document details the mathematical styling algorithms, Tailwind CSS v4 variables architecture, and Next.js layout integration patterns of the unified `@abd/styles` ecosystem.
+This document details the mathematical styling algorithms, Tailwind CSS v4 variables architecture, and Next.js layout integration patterns of the unified `@ajabadia/styles` ecosystem.
 
 ---
 
 ## 🏛️ System Architecture Overview
 
-The `@abd/styles` library provides a **0ms-latency styling compilation engine** designed to compile dynamic, accessible tenant-brand themes inside Next.js Server Components (`SSR`).
+The `@ajabadia/styles` library provides a **0ms-latency styling compilation engine** designed to compile dynamic, accessible tenant-brand themes inside Next.js Server Components (`SSR`).
 
 ```mermaid
 graph TD
@@ -97,7 +97,7 @@ Add the central repository link directly to the `package.json` of the consumer a
 ```json
 {
   "dependencies": {
-    "@abd/styles": "git+https://github.com/ajabadia/ABDStyles.git#main"
+    "@ajabadia/styles": "git+https://github.com/ajabadia/ABDStyles.git#main"
   }
 }
 ```
@@ -107,7 +107,7 @@ This is fully compatible with Vercel's build container, enabling private or publ
 In corporate/satelite layout modules, retrieve the active tenant session metadata and render the computed CSS string directly into the server-rendered `<head>` block to avoid visual styles flashing (FOUC):
 
 ```tsx
-import { generateTenantCss } from '@abd/styles';
+import { generateTenantCss } from '@ajabadia/styles';
 import { getActiveTenant } from '@/lib/tenant-service'; // Your db/session locator
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

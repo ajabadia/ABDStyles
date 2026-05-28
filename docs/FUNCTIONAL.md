@@ -1,4 +1,4 @@
-# Functional Specifications Guide - `@abd/styles`
+# Functional Specifications Guide - `@ajabadia/styles`
 
 This document details the functional specifications, product roadmap, and operational guidelines for the **Dynamic Multi-Tenant Customizer** platform across the ABD SaaS suite.
 

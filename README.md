@@ -1,4 +1,4 @@
-# `@abd/styles` — Industrial Styling Gateway
+# `@ajabadia/styles` — Industrial Styling Gateway
 
 Centralized multi-tenant dynamic styling engine and common visual tokens for the entire **ABD SaaS Suite** (`ABDAuth`, `ABDQuiz`, `ABDGovernance`, `ABDDocumentation`, `ABDCompliance`). 
 
@@ -13,11 +13,11 @@ Now also serves as the single provider for:
 ## 🛠️ Quickstart
 
 ### 1. Installation
-To install `@abd/styles` in any sibling repository across Vercel, reference the Git repository directly in your `package.json`:
+To install `@ajabadia/styles` in any sibling repository across Vercel, reference the Git repository directly in your `package.json`:
 ```json
 {
   "dependencies": {
-    "@abd/styles": "git+https://github.com/ajabadia/ABDStyles.git#main"
+    "@ajabadia/styles": "git+https://github.com/ajabadia/ABDStyles.git#main"
   }
 }
 ```

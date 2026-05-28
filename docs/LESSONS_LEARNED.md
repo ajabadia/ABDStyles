@@ -1,6 +1,6 @@
-# Sanctuary of Lessons Learned — `@abd/styles`
+# Sanctuary of Lessons Learned — `@ajabadia/styles`
 
-This document stores the technical challenges, silent failures, and resolution strategies discovered during the development of the `@abd/styles` unified dynamic styling system.
+This document stores the technical challenges, silent failures, and resolution strategies discovered during the development of the `@ajabadia/styles` unified dynamic styling system.
 
 ---
 
@@ -37,7 +37,7 @@ This single setting instructs both Node and TypeScript that this package consist
 ## 🏛️ Victory 2: Abstracción de Componentes de UI y Conflictos de Dependencias de React 19
 
 ### 1. El Síntoma
-Al añadir componentes interactivos como `AdminPageHeader.tsx`, `Footer.tsx`, `HeroHeader.tsx`, `TacticalSidebar.tsx` y `ThemeScript.tsx` a la librería `@abd/styles`, surgieron dos problemas:
+Al añadir componentes interactivos como `AdminPageHeader.tsx`, `Footer.tsx`, `HeroHeader.tsx`, `TacticalSidebar.tsx` y `ThemeScript.tsx` a la librería `@ajabadia/styles`, surgieron dos problemas:
 1. El compilador `tsc` fallaba al no saber cómo interpretar las etiquetas JSX (`<button>`, `<aside>`, etc.), arrojando errores de sintaxis TS.
 2. Al ejecutar `npm install` localmente para verificar los tipos de React, la herramienta de administración de paquetes de Node (`npm`) arrojó un error de árbol de dependencias (`ERESOLVE` unable to resolve dependency tree) indicando que `lucide-react@0.46.0` requiere de forma estricta React 16, 17 o 18, colisionando con el nuevo `react@^19.0.0` declarado en la raíz.
 
@@ -47,7 +47,7 @@ Al añadir componentes interactivos como `AdminPageHeader.tsx`, `Footer.tsx`, `H
 
 ### 3. La Solución Industrial
 1. **Configuración de JSX**: Añadimos `"jsx": "react-jsx"` dentro de las `compilerOptions` en [tsconfig.json](file:///d:/desarrollos/ABDStyles/tsconfig.json) para permitir que `tsc` transpile el JSX utilizando el nuevo runtime síncrono nativo de React.
-2. **Abstracción Pura de Props**: Diseñamos componentes 100% agnósticos y puros (sin importar routers ni localizadores como `next-intl` o `next-auth` dentro del paquete `@abd/styles`). En su lugar, el componente recibe wrappers (`LinkComponent`), callbacks e interfaces de traducciones pasadas como propiedades por la aplicación cliente.
+2. **Abstracción Pura de Props**: Diseñamos componentes 100% agnósticos y puros (sin importar routers ni localizadores como `next-intl` o `next-auth` dentro del paquete `@ajabadia/styles`). En su lugar, el componente recibe wrappers (`LinkComponent`), callbacks e interfaces de traducciones pasadas como propiedades por la aplicación cliente.
 3. **Instalación con Fuerza / Omitida**: Para compilar localmente el paquete sin bloquear el pipeline debido a incompatibilidades de versiones entre Lucide-React y React 19, ejecutamos la instalación con:
    ```powershell
    npm install --legacy-peer-deps

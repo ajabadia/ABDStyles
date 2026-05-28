@@ -1,4 +1,4 @@
-# 🔍 Auditoría Técnica — `@abd/styles` v1.0.0 (v03)
+# 🔍 Auditoría Técnica — `@ajabadia/styles` v1.0.0 (v03)
 
 **Fecha:** 25 de Mayo de 2026
 **Rol:** Design System Centralizado — Tokens HSL, utilidades de color, componentes presentacionales
@@ -33,7 +33,7 @@ Verificado: el archivo `src/hooks/useLivePolling.ts` ya no existe. Migrado a `AB
 Verificado: el archivo `src/config/featureFlags.ts` ya no existe. Migrado a `ABDEcosystemWidgets`.
 
 ### ✅ Issue #3 — Tipo AuditLog en Design System: CORREGIDO Y VERIFICADO
-`@abd/styles` ya no exporta `AuditLog`. El tipo se definió localmente en `ABDEcosystemWidgets/src/types.ts`.
+`@ajabadia/styles` ya no exporta `AuditLog`. El tipo se definió localmente en `ABDEcosystemWidgets/src/types.ts`.
 
 ### ✅ Issue #4 — cn() sin tailwind-merge: CORREGIDO Y VERIFICADO
 Verificado en `src/components/utils.ts`:
@@ -121,6 +121,6 @@ Build config para generar ESM + CJS.
 
 ## 🏁 Conclusión
 
-**`@abd/styles`** (v03) mantiene su estado de **design system puro** sin contaminación arquitectónica. Las correcciones de esta versión se centraron en limpiar documentación stale y modernizar el build toolchain eliminando `cpx` (deprecado).
+**`@ajabadia/styles`** (v03) mantiene su estado de **design system puro** sin contaminación arquitectónica. Las correcciones de esta versión se centraron en limpiar documentación stale y modernizar el build toolchain eliminando `cpx` (deprecado).
 
 **Calificación general:** ✅ SYS_CERTIFIED — Design system maduro, testeado y arquitectónicamente puro.
