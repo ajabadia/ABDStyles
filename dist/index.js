@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import 'react';
 import { jsx, jsxs } from 'react/jsx-runtime';
+import { Eye, UserCheck, PenTool } from 'lucide-react';
 
 // src/utils/color-utils.ts
 function getContrastColor(hexcolor) {
@@ -233,7 +234,70 @@ function HeroHeader({
     description && /* @__PURE__ */ jsx("p", { className: "text-lg text-muted-foreground max-w-[650px] font-light leading-relaxed mx-auto", children: description })
   ] });
 }
+var DEFAULT_LITERALS = {
+  CREATOR: { es: "Creador", en: "Creator" },
+  RECIPIENT: { es: "Destinatario", en: "Recipient" },
+  AUDITOR: { es: "Auditor", en: "Auditor" }
+};
+var ROLE_VISUALS = {
+  CREATOR: {
+    icon: PenTool,
+    bg: "bg-sky-500/10 dark:bg-sky-500/15",
+    text: "text-sky-600 dark:text-sky-400",
+    border: "border-sky-500/20 dark:border-sky-500/25",
+    badgeBg: "bg-sky-500"
+  },
+  RECIPIENT: {
+    icon: UserCheck,
+    bg: "bg-emerald-500/10 dark:bg-emerald-500/15",
+    text: "text-emerald-600 dark:text-emerald-400",
+    border: "border-emerald-500/20 dark:border-emerald-500/25",
+    badgeBg: "bg-emerald-500"
+  },
+  AUDITOR: {
+    icon: Eye,
+    bg: "bg-amber-500/10 dark:bg-amber-500/15",
+    text: "text-amber-600 dark:text-amber-400",
+    border: "border-amber-500/20 dark:border-amber-500/25",
+    badgeBg: "bg-amber-500"
+  }
+};
+function RoleBadge({
+  role,
+  roleLiterals,
+  locale = "es",
+  variant = "default",
+  showIcon = true,
+  icon: CustomIcon,
+  className = ""
+}) {
+  const literals = roleLiterals ?? DEFAULT_LITERALS;
+  const label = literals[role]?.[locale] ?? DEFAULT_LITERALS[role][locale];
+  const visual = ROLE_VISUALS[role];
+  const IconComponent = CustomIcon ?? visual.icon;
+  const variantClasses = {
+    default: `${visual.bg} ${visual.text} ${visual.border} border`,
+    outline: "bg-transparent border border-border text-muted-foreground",
+    ghost: "bg-transparent border-transparent text-muted-foreground"
+  };
+  return /* @__PURE__ */ jsxs(
+    "span",
+    {
+      "data-role": role,
+      "data-variant": variant,
+      className: `inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap rounded-none transition-colors duration-150 ${variantClasses[variant]} ${className}`,
+      children: [
+        showIcon && variant === "default" && /* @__PURE__ */ jsxs("span", { className: "relative flex h-2 w-2 shrink-0", children: [
+          /* @__PURE__ */ jsx("span", { className: `animate-ping absolute inline-flex h-full w-full rounded-full ${visual.badgeBg} opacity-75` }),
+          /* @__PURE__ */ jsx("span", { className: `relative inline-flex rounded-full h-2 w-2 ${visual.badgeBg}` })
+        ] }),
+        showIcon && variant !== "default" && /* @__PURE__ */ jsx("span", { className: "shrink-0 flex items-center", children: /* @__PURE__ */ jsx(IconComponent, { size: 12, "aria-hidden": "true" }) }),
+        label
+      ]
+    }
+  );
+}
 
-export { AdminPageHeader, HeroHeader, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
+export { AdminPageHeader, HeroHeader, RoleBadge, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

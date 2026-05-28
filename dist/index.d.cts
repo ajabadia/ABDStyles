@@ -131,4 +131,62 @@ interface HeroHeaderProps {
  */
 declare function HeroHeader({ statusText, title, description, className, titleClassName, }: HeroHeaderProps): react_jsx_runtime.JSX.Element;
 
-export { AdminPageHeader, type AdminPageHeaderProps, HeroHeader, type HeroHeaderProps, type TenantBrandingConfig, type TenantThemeConfig, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
+type RoleType = 'CREATOR' | 'RECIPIENT' | 'AUDITOR';
+interface RoleLiteralsMap {
+    CREATOR: {
+        es: string;
+        en: string;
+    };
+    RECIPIENT: {
+        es: string;
+        en: string;
+    };
+    AUDITOR: {
+        es: string;
+        en: string;
+    };
+}
+type RoleBadgeVariant = 'default' | 'outline' | 'ghost';
+interface RoleBadgeProps {
+    /** The internal role type */
+    role: RoleType;
+    /** Optional tenant-specific role literals (from roleCustomization.roleLiterals) */
+    roleLiterals?: RoleLiteralsMap;
+    /** Locale to render the literal in (default: 'es') */
+    locale?: 'es' | 'en';
+    /** Visual variant (default: 'default') */
+    variant?: RoleBadgeVariant;
+    /** Whether to show a role icon (default: true) */
+    showIcon?: boolean;
+    /** Optional custom icon override */
+    icon?: ElementType;
+    /** Additional CSS classes */
+    className?: string;
+}
+/**
+ * 🏷️ RoleBadge
+ *
+ * Renders a contextual role badge that displays the tenant-customizable literal
+ * for a given internal role (CREATOR / RECIPIENT / AUDITOR).
+ *
+ * When `roleLiterals` is provided (from the tenant's `roleCustomization` config),
+ * the badge displays the tenant-specific name for the role in the given locale.
+ * Otherwise, it falls back to default literals (Creador / Destinatario / Auditor).
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with defaults
+ * <RoleBadge role="CREATOR" />
+ *
+ * // With tenant customization
+ * <RoleBadge
+ *   role="RECIPIENT"
+ *   roleLiterals={tenant.roleCustomization?.roleLiterals}
+ *   locale="en"
+ *   variant="outline"
+ * />
+ * ```
+ */
+declare function RoleBadge({ role, roleLiterals, locale, variant, showIcon, icon: CustomIcon, className, }: RoleBadgeProps): react_jsx_runtime.JSX.Element;
+
+export { AdminPageHeader, type AdminPageHeaderProps, HeroHeader, type HeroHeaderProps, RoleBadge, type RoleBadgeProps, type RoleBadgeVariant, type RoleLiteralsMap, type RoleType, type TenantBrandingConfig, type TenantThemeConfig, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };

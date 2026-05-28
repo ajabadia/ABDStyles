@@ -5,11 +5,11 @@ describe('generateTenantCss', () => {
   it('should fall back to Tech-Noir Cyan defaults if parsing fails or invalid input is provided', () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     
-    const css = generateTenantCss({} as any);
+    const css = generateTenantCss({});
 
     // Verify fallback values (cyan-500 #06b6d4 HSL components: 189 94% 43%)
-    expect(css).toContain('--primary: 189 94% 43% !important;');
-    expect(css).toContain('--secondary: 217 33% 17% !important;'); // slate-800 #1e293b
+    expect(css).toContain('--primary: hsl(189 94% 43%) !important;');
+    expect(css).toContain('--secondary: hsl(217 33% 17%) !important;'); // slate-800 #1e293b
     expect(css).toContain('--radius: 0.15rem !important;');
     expect(errorSpy).toHaveBeenCalled();
 
@@ -23,9 +23,9 @@ describe('generateTenantCss', () => {
 
     const css = generateTenantCss(theme);
 
-    expect(css).toContain('--primary: 0 84% 60% !important;');
+    expect(css).toContain('--primary: hsl(0 84% 60%) !important;');
     // Foreground YIQ contrast check: red should have white fg (0 0% 100% or similar)
-    expect(css).toContain('--primary-foreground: 0 0% 100% !important;');
+    expect(css).toContain('--primary-foreground: hsl(0 0% 100%) !important;');
     expect(css).toContain('--radius: 0.75rem !important;'); // default radius
   });
 
@@ -39,11 +39,11 @@ describe('generateTenantCss', () => {
 
     const css = generateTenantCss(theme);
 
-    expect(css).toContain('--primary: 217 91% 60% !important;');
-    expect(css).toContain('--secondary: 160 84% 39% !important;');
-    expect(css).toContain('--accent: 38 92% 50% !important;');
-    expect(css).toContain('--background: 240 10% 4% !important;');
-    expect(css).toContain('--foreground: 0 0% 100% !important;'); // white fg on dark bg
+    expect(css).toContain('--primary: hsl(217 91% 60%) !important;');
+    expect(css).toContain('--secondary: hsl(160 84% 39%) !important;');
+    expect(css).toContain('--accent: hsl(38 92% 50%) !important;');
+    expect(css).toContain('--background: hsl(240 10% 4%) !important;');
+    expect(css).toContain('--foreground: hsl(0 0% 100%) !important;'); // white fg on dark bg
   });
 
   it('should force "--radius: 0px" when rounded is set to false', () => {
@@ -79,8 +79,8 @@ describe('generateTenantCss', () => {
 
     expect(css).toContain('.dark {');
     // Shifted primary (#3b82f6 lightened by 15% becomes #61a8ff, HSL: 213 100% 69%)
-    expect(css).toContain('--primary: 213 100% 69% !important;');
+    expect(css).toContain('--primary: hsl(213 100% 69%) !important;');
     // Shifted accent (#f59e0b lightened by 15% becomes #ffc04d, HSL: 43 100% 60%)
-    expect(css).toContain('--accent: 43 100% 60% !important;');
+    expect(css).toContain('--accent: hsl(43 100% 60%) !important;');
   });
 });
