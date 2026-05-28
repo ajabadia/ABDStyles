@@ -4,6 +4,13 @@
   "type": "module",
   "description": "Industrial multi-tenant dynamic styling engine and common visual assets for ABD suite.",
   "main": "dist/index.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajabadia/ABDStyles.git"
+  },
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
