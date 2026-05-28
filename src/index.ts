@@ -12,3 +12,4 @@ export * from './components/ThemeScript.js';
 export * from './components/AdminPageHeader.js';
 export * from './components/HeroHeader.js';
 export * from './components/RoleBadge.js';
+export * from './components/LabeledField.js';

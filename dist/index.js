@@ -1,7 +1,9 @@
 import { z } from 'zod';
-import 'react';
+import React5 from 'react';
 import { jsx, jsxs } from 'react/jsx-runtime';
 import { Eye, UserCheck, PenTool } from 'lucide-react';
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 // src/utils/color-utils.ts
 function getContrastColor(hexcolor) {
@@ -297,7 +299,57 @@ function RoleBadge({
     }
   );
 }
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+function LabeledField({
+  id,
+  label,
+  error,
+  hint,
+  required = false,
+  className,
+  labelClassName,
+  children,
+  raw = false
+}) {
+  const errorId = `${id}-error`;
+  const hintId = `${id}-hint`;
+  const describedBy = [error ? errorId : "", hint ? hintId : ""].filter(Boolean).join(" ") || void 0;
+  const child = raw ? children : React5.isValidElement(children) ? React5.cloneElement(children, {
+    ...children.props,
+    id,
+    ...describedBy ? { "aria-describedby": describedBy } : {}
+  }) : children;
+  return /* @__PURE__ */ jsxs("div", { className: cn("flex flex-col gap-1.5", className), children: [
+    /* @__PURE__ */ jsxs(
+      "label",
+      {
+        htmlFor: id,
+        className: cn(
+          "text-sm font-medium leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+          labelClassName
+        ),
+        children: [
+          label,
+          required && /* @__PURE__ */ jsx("span", { className: "ml-0.5 text-destructive", "aria-hidden": "true", children: "*" })
+        ]
+      }
+    ),
+    child,
+    hint && /* @__PURE__ */ jsx("p", { id: hintId, className: "text-xs text-muted-foreground", children: hint }),
+    error && /* @__PURE__ */ jsx(
+      "p",
+      {
+        id: errorId,
+        role: "alert",
+        className: "text-xs font-medium text-destructive flex items-center gap-1",
+        children: error
+      }
+    )
+  ] });
+}
 
-export { AdminPageHeader, HeroHeader, RoleBadge, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
+export { AdminPageHeader, HeroHeader, LabeledField, RoleBadge, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

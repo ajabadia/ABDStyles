@@ -1,9 +1,15 @@
 'use strict';
 
 var zod = require('zod');
-require('react');
+var React5 = require('react');
 var jsxRuntime = require('react/jsx-runtime');
 var lucideReact = require('lucide-react');
+var clsx = require('clsx');
+var tailwindMerge = require('tailwind-merge');
+
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
+
+var React5__default = /*#__PURE__*/_interopDefault(React5);
 
 // src/utils/color-utils.ts
 function getContrastColor(hexcolor) {
@@ -299,9 +305,60 @@ function RoleBadge({
     }
   );
 }
+function cn(...inputs) {
+  return tailwindMerge.twMerge(clsx.clsx(inputs));
+}
+function LabeledField({
+  id,
+  label,
+  error,
+  hint,
+  required = false,
+  className,
+  labelClassName,
+  children,
+  raw = false
+}) {
+  const errorId = `${id}-error`;
+  const hintId = `${id}-hint`;
+  const describedBy = [error ? errorId : "", hint ? hintId : ""].filter(Boolean).join(" ") || void 0;
+  const child = raw ? children : React5__default.default.isValidElement(children) ? React5__default.default.cloneElement(children, {
+    ...children.props,
+    id,
+    ...describedBy ? { "aria-describedby": describedBy } : {}
+  }) : children;
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: cn("flex flex-col gap-1.5", className), children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      "label",
+      {
+        htmlFor: id,
+        className: cn(
+          "text-sm font-medium leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+          labelClassName
+        ),
+        children: [
+          label,
+          required && /* @__PURE__ */ jsxRuntime.jsx("span", { className: "ml-0.5 text-destructive", "aria-hidden": "true", children: "*" })
+        ]
+      }
+    ),
+    child,
+    hint && /* @__PURE__ */ jsxRuntime.jsx("p", { id: hintId, className: "text-xs text-muted-foreground", children: hint }),
+    error && /* @__PURE__ */ jsxRuntime.jsx(
+      "p",
+      {
+        id: errorId,
+        role: "alert",
+        className: "text-xs font-medium text-destructive flex items-center gap-1",
+        children: error
+      }
+    )
+  ] });
+}
 
 exports.AdminPageHeader = AdminPageHeader;
 exports.HeroHeader = HeroHeader;
+exports.LabeledField = LabeledField;
 exports.RoleBadge = RoleBadge;
 exports.ThemeScript = ThemeScript;
 exports.adjustColor = adjustColor;

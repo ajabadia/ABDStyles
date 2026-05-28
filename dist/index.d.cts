@@ -189,4 +189,44 @@ interface RoleBadgeProps {
  */
 declare function RoleBadge({ role, roleLiterals, locale, variant, showIcon, icon: CustomIcon, className, }: RoleBadgeProps): react_jsx_runtime.JSX.Element;
 
-export { AdminPageHeader, type AdminPageHeaderProps, HeroHeader, type HeroHeaderProps, RoleBadge, type RoleBadgeProps, type RoleBadgeVariant, type RoleLiteralsMap, type RoleType, type TenantBrandingConfig, type TenantThemeConfig, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
+interface LabeledFieldProps {
+    /** Unique id — applied to the child input/select via cloneElement AND used as htmlFor on the label */
+    id: string;
+    /** Visible label text */
+    label: ReactNode;
+    /** Optional error message string. When present, renders a <p role="alert"> below the field */
+    error?: string | null | undefined;
+    /** Optional helper / hint text shown below the field */
+    hint?: ReactNode;
+    /** Marks the field as required (adds visual asterisk) */
+    required?: boolean;
+    /** Additional class names for the wrapper */
+    className?: string;
+    /** Additional class names for the <label> element */
+    labelClassName?: string;
+    /** The input, select, textarea, or other form control. Receives `id` and `aria-describedby` */
+    children: ReactNode;
+    /** If true, renders children directly without cloneElement (just wraps in field container) */
+    raw?: boolean;
+}
+/**
+ * 🛰️ LabeledField
+ *
+ * Accessible form field wrapper that ties together:
+ * - `<label htmlFor={id}>` → input via `id`
+ * - Error message with `role="alert"` for screen‑reader announcements
+ * - Hint / helper text
+ *
+ * Usage:
+ * ```tsx
+ * <LabeledField id="email" label="Email" error={errors.email}>
+ *   <Input id="email" {...register("email")} aria-describedby="email-hint" />
+ * </LabeledField>
+ * ```
+ *
+ * When `raw` is false (default), the component **clones** the child and
+ * injects `id` so you don't have to repeat it.
+ */
+declare function LabeledField({ id, label, error, hint, required, className, labelClassName, children, raw, }: LabeledFieldProps): react_jsx_runtime.JSX.Element;
+
+export { AdminPageHeader, type AdminPageHeaderProps, HeroHeader, type HeroHeaderProps, LabeledField, type LabeledFieldProps, RoleBadge, type RoleBadgeProps, type RoleBadgeVariant, type RoleLiteralsMap, type RoleType, type TenantBrandingConfig, type TenantThemeConfig, ThemeScript, adjustColor, brandingSchema, generateTenantCss, getContrastColor, hexColorSchema, hexToHslComponents, themeSchema };
