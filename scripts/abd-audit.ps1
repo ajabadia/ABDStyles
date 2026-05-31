@@ -27,7 +27,7 @@ if (Test-Path "package.json") {
     try {
         $pkg = Get-Content "package.json" -Raw | ConvertFrom-Json
         $appName = $pkg.name
-        if ($pkg.name -ne "@abd/styles") {
+        if ($pkg.name -ne "@abd/styles" -and $pkg.name -ne "@ajabadia/styles") {
             $isLibrary = $false
         }
     } catch {
