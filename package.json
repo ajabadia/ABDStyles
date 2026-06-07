@@ -1,6 +1,6 @@
 {
   "name": "@ajabadia/styles",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "type": "module",
   "description": "Industrial multi-tenant dynamic styling engine and common visual assets for ABD suite.",
   "main": "dist/index.js",
@@ -19,7 +19,9 @@
     },
     "./dist/*": "./dist/*"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup && cpy \"src/styles/**/*\" dist/styles",
     "clean": "rm -rf dist",
@@ -27,7 +29,14 @@
     "test:coverage": "vitest run --coverage",
     "audit": "powershell ./scripts/abd-audit.ps1"
   },
-  "keywords": ["abd", "theme", "multi-tenant", "branding", "tailwind", "yiq"],
+  "keywords": [
+    "abd",
+    "theme",
+    "multi-tenant",
+    "branding",
+    "tailwind",
+    "yiq"
+  ],
   "author": "ABD Team",
   "license": "UNLICENSED",
   "dependencies": {
