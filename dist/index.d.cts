@@ -3,6 +3,15 @@ import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ElementType, ReactNode } from 'react';
 
 /**
+ * @purpose Proporciona funciones útiles para el manejo de colores, incluyendo la calculación del contraste y la conversión entre formatos de color diferentes.
+ * @purpose_en Provides utility functions for color management, including contrast calculation and conversion between different color formats.
+ * @refactorable true (contains multiple distinct utility functions)
+ * @classification Helper Utility
+ * @complexity Low
+ * @fingerprint exports:3,imports:0,sig:oci5w1
+ * @lastUpdated 2026-06-23T23:26:49.058Z
+ */
+/**
  * ABDStyles - Industrial Styling Color Utilities
  *
  * Safe, mathematical color processing algorithms including YIQ accessibility contrast,
@@ -35,6 +44,16 @@ declare function adjustColor(hex: string, percent: number): string;
  * @returns Space-separated HSL components
  */
 declare function hexToHslComponents(hex: string): string;
+
+/**
+ * @purpose Valida las configuraciones de marca de inquilino utilizando esquemas de Zod.
+ * @purpose_en Validates tenant branding configurations using Zod schemas.
+ * @refactorable false
+ * @classification Type Definition
+ * @complexity Low
+ * @fingerprint exports:5,imports:1,sig:u482ts
+ * @lastUpdated 2026-06-23T23:26:52.857Z
+ */
 
 /**
  * Zod validation schema for individual color hex codes.
@@ -71,6 +90,15 @@ type TenantThemeConfig = z.infer<typeof themeSchema>;
 type TenantBrandingConfig = z.infer<typeof brandingSchema>;
 
 /**
+ * @purpose Proporciona un bloque CSS optimizado para personalizar Tailwind CSS y propiedades CSS estándar según la configuración del tema proporcionada.
+ * @purpose_en Generates an optimized CSS block for customizing Tailwind CSS and standard CSS properties based on provided theme configuration.
+ * @refactorable true (contains too many state variables and UI parts)
+ * @classification Helper Utility
+ * @complexity Medium
+ * @fingerprint exports:1,imports:2,sig:1npffn3
+ * @lastUpdated 2026-06-23T23:26:39.467Z
+ */
+/**
  * Generates an optimized, highly robust CSS injection block to customize
  * Tailwind CSS v4 and standard CSS custom properties.
  *
@@ -82,6 +110,15 @@ type TenantBrandingConfig = z.infer<typeof brandingSchema>;
  */
 declare function generateTenantCss(config: unknown): string;
 
+/**
+ * @purpose Gestiona la inicialización del tema del cliente al cargar de manera segura el tema preferido del usuario desde localStorage y aplicarlo a la raíz del elemento documental.
+ * @purpose_en Manages client-side theme initialization by safely loading the user's preferred theme from localStorage and applying it to the document root element.
+ * @refactorable false
+ * @classification UI Component
+ * @complexity Low
+ * @fingerprint exports:1,imports:1,sig:ujaht3
+ * @lastUpdated 2026-06-23T23:26:29.960Z
+ */
 /**
  * 🌓 ThemeScript: Centralized client-side theme initialization
  * Safely loads the user's preferred theme from localStorage prior to full rendering,
