@@ -1,3 +1,13 @@
+/**
+ * @purpose Renderiza un campo de formulario etiquetado con mensajes de error y sugerencia opcionales.
+ * @purpose_en Renders a labeled form field with optional error and hint messages.
+ * @refactorable true (contains too many state variables and UI parts)
+ * @classification UI Component
+ * @complexity Low
+ * @fingerprint exports:2,imports:3,sig:yi6di9
+ * @lastUpdated 2026-06-23T23:26:19.263Z
+ */
+
 import React from "react";
 import type { ReactNode } from "react";
 import { cn } from "./utils.js";

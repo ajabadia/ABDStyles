@@ -1,3 +1,13 @@
+/**
+ * @purpose Proporciona un bloque CSS optimizado para personalizar Tailwind CSS y propiedades CSS estándar según la configuración del tema proporcionada.
+ * @purpose_en Generates an optimized CSS block for customizing Tailwind CSS and standard CSS properties based on provided theme configuration.
+ * @refactorable true (contains too many state variables and UI parts)
+ * @classification Helper Utility
+ * @complexity Medium
+ * @fingerprint exports:1,imports:2,sig:1npffn3
+ * @lastUpdated 2026-06-23T23:26:39.467Z
+ */
+
 import { hexToHslComponents, getContrastColor, adjustColor } from '../utils/color-utils.js';
 import { themeSchema, type TenantThemeConfig } from '../validation/branding-schema.js';
 

@@ -1,3 +1,13 @@
+/**
+ * @purpose Renderiza un componente de badge que muestra el rol del usuario con una icono y texto, apoyando múltiples ubicaciones y variantes.
+ * @purpose_en Renders a badge component that displays the role of a user with an icon and text, supporting multiple locales and variants.
+ * @refactorable true (contains too many state variables and UI parts)
+ * @classification UI Component
+ * @complexity Low
+ * @fingerprint exports:5,imports:3,sig:1ymvhr6
+ * @lastUpdated 2026-06-23T23:26:24.346Z
+ */
+
 import React from 'react';
 import type { ElementType } from 'react';
 import { PenTool, UserCheck, Eye } from 'lucide-react';

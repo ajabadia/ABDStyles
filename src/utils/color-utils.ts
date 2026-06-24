@@ -1,4 +1,14 @@
 /**
+ * @purpose Proporciona funciones útiles para el manejo de colores, incluyendo la calculación del contraste y la conversión entre formatos de color diferentes.
+ * @purpose_en Provides utility functions for color management, including contrast calculation and conversion between different color formats.
+ * @refactorable true (contains multiple distinct utility functions)
+ * @classification Helper Utility
+ * @complexity Low
+ * @fingerprint exports:3,imports:0,sig:oci5w1
+ * @lastUpdated 2026-06-23T23:26:49.058Z
+ */
+
+/**
  * ABDStyles - Industrial Styling Color Utilities
  * 
  * Safe, mathematical color processing algorithms including YIQ accessibility contrast,

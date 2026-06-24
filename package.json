@@ -25,6 +25,7 @@
   "scripts": {
     "build": "tsup && cpy \"src/styles/**/*\" dist/styles",
     "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "audit": "powershell ./scripts/abd-audit.ps1"

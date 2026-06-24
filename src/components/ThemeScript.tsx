@@ -1,3 +1,13 @@
+/**
+ * @purpose Gestiona la inicialización del tema del cliente al cargar de manera segura el tema preferido del usuario desde localStorage y aplicarlo a la raíz del elemento documental.
+ * @purpose_en Manages client-side theme initialization by safely loading the user's preferred theme from localStorage and applying it to the document root element.
+ * @refactorable false
+ * @classification UI Component
+ * @complexity Low
+ * @fingerprint exports:1,imports:1,sig:ujaht3
+ * @lastUpdated 2026-06-23T23:26:29.960Z
+ */
+
 import React from 'react';
 
 /**

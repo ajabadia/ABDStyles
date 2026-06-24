@@ -1,3 +1,13 @@
+/**
+ * @purpose Renderiza un componente de cabecera estándar grande para páginas de aterrizaje públicas dentro del conjunto ABD, incluyendo una notificacion emergente, título y subtítulo opcional.
+ * @purpose_en Renders a standardized large header component for public landing pages across the ABD Suite, including a status pill, title, and optional subtitle.
+ * @refactorable false
+ * @classification UI Component
+ * @complexity Low
+ * @fingerprint exports:2,imports:2,sig:5kkc55
+ * @lastUpdated 2026-06-23T23:26:15.233Z
+ */
+
 import React from "react";
 import type { ReactNode } from "react";
 

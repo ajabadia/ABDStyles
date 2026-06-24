@@ -1,3 +1,13 @@
+/**
+ * @purpose Valida las configuraciones de marca de inquilino utilizando esquemas de Zod.
+ * @purpose_en Validates tenant branding configurations using Zod schemas.
+ * @refactorable false
+ * @classification Type Definition
+ * @complexity Low
+ * @fingerprint exports:5,imports:1,sig:u482ts
+ * @lastUpdated 2026-06-23T23:26:52.857Z
+ */
+
 import { z } from 'zod';
 
 /**

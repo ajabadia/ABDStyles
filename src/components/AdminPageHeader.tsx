@@ -1,3 +1,13 @@
+/**
+ * @purpose Renderiza un componente de cabecera estándar para paneles administrativos dentro del conjunto ABD Suite, incluyendo una icono, breadcrumb, título, descripción y acciones.
+ * @purpose_en Renders a standardized header component for administrative dashboards across the ABD Suite, including an icon, breadcrumb, title, description, and actions.
+ * @refactorable false
+ * @classification UI Component
+ * @complexity Low
+ * @fingerprint exports:2,imports:2,sig:1chwma
+ * @lastUpdated 2026-06-23T23:26:08.983Z
+ */
+
 import React from "react";
 import type { ElementType, ReactNode } from "react";
 
