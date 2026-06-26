@@ -17,14 +17,14 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./dist/*": "./dist/*"
+    "./dist/styles/*": "./dist/styles/*"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup && cpy \"src/styles/**/*\" dist/styles",
-    "clean": "rm -rf dist",
+    "build": "tsup && node -e \"fs.cpSync('src/styles','dist/styles',{recursive:true})\"",
+    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -54,7 +54,6 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@vitest/coverage-v8": "catalog:",
-    "cpy-cli": "^5.0.0",
     "lucide-react": "catalog:",
     "next-intl": "catalog:",
     "react": "catalog:",

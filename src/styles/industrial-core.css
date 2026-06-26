@@ -129,85 +129,10 @@ html *::after {
  z-index: 1;
 }
 
+/* ── Console Buttons ── */
+
 .btn-primary-console {
  display: inline-flex;
- align-items: center;
- justify-content: center;
- gap: 0.5rem;
- border: 1px solid hsl(var(--primary) / 0.5);
- padding: 0.75rem 1.5rem;
- font-family: var(--font-mono);
- font-size: 10px;
- font-weight: 700;
- letter-spacing: 0.2em;
- text-transform: uppercase;
- transition: all 150ms ease-in-out;
- border-radius: 0px;
- background: transparent;
- color: hsl(var(--primary));
- cursor: pointer;
-}
-
-.btn-primary-console:hover {
- background: hsl(var(--primary) / 0.1);
- border-color: hsl(var(--primary));
- box-shadow: 0 0 15px hsl(var(--primary) / 0.1);
-}
-
-@keyframes console-pulse {
- 0%, 100% { opacity: 1; }
- 50% { opacity: 0.4; }
-}
-
-@utility animate-console-pulse {
- animation: console-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.btn-secondary-console {
- display: inline-flex;
- align-items: center;
- justify-content: center;
- gap: 0.5rem;
- border: 1px solid hsl(var(--border));
- padding: 0.75rem 1.5rem;
- font-family: var(--font-mono);
- font-size: 10px;
- font-weight: 700;
- letter-spacing: 0.2em;
- text-transform: uppercase;
- transition: all 150ms ease-in-out;
- border-radius: 0px;
- background: transparent;
- color: hsl(var(--muted-foreground));
- cursor: pointer;
-}
-
-.btn-secondary-console:hover {
- background: hsl(var(--muted) / 0.5);
- border-color: hsl(var(--foreground) / 0.4);
- color: hsl(var(--foreground));
-}
-
-.btn-destructive-console {
- display: inline-flex;
- align-items: center;
- justify-content: center;
- gap: 0.5rem;
- border: 1px solid hsl(var(--destructive) / 0.5);
- padding: 0.75rem 1.5rem;
- font-family: var(--font-mono);
- font-size: 10px;
- font-weight: 700;
- letter-spacing: 0.2em;
- text-transform: uppercase;
- transition: all 150ms ease-in-out;
- border-radius: 0px;
- background: transparent;
- color: hsl(var(--destructive));
- cursor: pointer;
-}
-
-.btn-destructive-console:hover {
  align-items: center;
  justify-content: center;
  gap: 0.5rem;
@@ -315,8 +240,8 @@ html *::after {
 
 /* Smart Navbar */
 .navbar-top-layout {
-  padding-top: 56px; /* Altura de la SmartNavbar */
-  padding-left: 0 !important; /* Sobrescribir padding lateral de la sidebar */
+  padding-top: 56px;
+  padding-left: 0 !important;
   transition: padding-top 0.3s ease-in-out;
 }
 
@@ -344,7 +269,6 @@ html *::after {
   z-index: 50;
 }
 
-/* Responsive utilities for SmartNavbar */
 @media (max-width: 767px) {
   .smart-navbar-desktop-only {
     display: none !important;
