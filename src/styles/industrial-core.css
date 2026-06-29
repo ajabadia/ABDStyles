@@ -281,10 +281,6 @@ html *::after {
 }
 
 /* Sidebar Logic */
-.sidebar-transition {
- transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .sidebar-collapsed {
  width: 64px !important;
 }
