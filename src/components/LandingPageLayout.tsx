@@ -1,3 +1,13 @@
+/**
+ * @purpose Renderiza una plantilla para la página de aterrizaje con anchura máxima opcional y nombres de clase personalizados.
+ * @purpose_en Renders a layout for the landing page with optional maximum width and custom class names.
+ * @refactorable false
+ * @classification UI Component
+ * @complexity Low
+ * @fingerprint exports:2,imports:2,sig:1ic7nze
+ * @lastUpdated 2026-06-29T22:24:51.187Z
+ */
+
 import React from "react";
 import type { ReactNode } from "react";
 

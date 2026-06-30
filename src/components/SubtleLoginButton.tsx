@@ -1,3 +1,13 @@
+/**
+ * @purpose Renderiza un botón de inicio con icono y texto sugerente.
+ * @purpose_en Renders a subtle login button with an icon and optional hint.
+ * @refactorable false
+ * @classification UI Component
+ * @complexity Low
+ * @fingerprint exports:2,imports:2,sig:1f8tml5
+ * @lastUpdated 2026-06-29T22:24:52.997Z
+ */
+
 import React from "react";
 import { LogIn } from "lucide-react";
 
