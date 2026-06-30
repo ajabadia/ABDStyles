@@ -264,9 +264,23 @@ html *::after {
   width: 100%;
   border-bottom: 1px solid var(--border);
   background-color: var(--background);
-  backdrop-filter: blur(16px);
   box-shadow: none;
   z-index: 50;
+}
+
+.smart-navbar-dropdown-inner {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+}
+
+.smart-navbar-dropdown-inner.smart-navbar-end {
+  justify-content: flex-end;
+}
+
+.smart-navbar-dropdown-inner.smart-navbar-start {
+  justify-content: flex-start;
 }
 
 @media (max-width: 767px) {
